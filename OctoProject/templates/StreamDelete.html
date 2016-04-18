@@ -1,0 +1,29 @@
+<form method="post" action="/deletestreamconfirm/">
+   <div class="modal-footer">
+      
+          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+        	  <h4 class="modal-title">Stream Delete Page</h4>
+        
+  Stream Name : <input type="text" size="35" name="delstream" id="delstream" value="{{ tagasp }}"><br>
+  Aspect : <input type="text" size="35"  name="delstreamaspect" id="delstreamaspect" value="{{ tag }}"><br>
+  <input type="submit" value="Submit" onclick="myFunction()">
+  
+
+</form>
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x;
+    if (confirm("Are you sure !") == true) {
+        x = "You pressed OK!";
+        
+    } else {
+    	return false;
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+

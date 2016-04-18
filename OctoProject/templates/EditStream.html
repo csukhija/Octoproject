@@ -1,0 +1,261 @@
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<div id="myModal" role="dialog">
+      <div class="modal-footer">
+      
+          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+        
+        <div class="modal-body">
+
+
+{% if streambest %}
+			
+<h3> Stream  details for {{ abr }}</h3>
+
+{% for stream in streambest %}
+
+					<a  href="/lstream/{{ stream }}"  id="{{ stream }}" data-dismiss="modal" data-toggle="modal" data-target="#myModal" >  {{ stream }}</a>
+</br>
+        			
+
+{% endfor %}
+{% endif %}
+
+{% if streamabrexisting %}
+			
+<h3>Existing abr for  {{ abr }} is below</h3>
+
+{% for stream in streamabrexisting %}
+        			<strong>{{ stream }}</strong><br>
+
+{% endfor %}
+{% endif %}
+
+{% if streamlistnonabr %}
+
+<form id="updateabr" method="post" action="/Updateabr/">
+{% if user.is_superuser or user.is_staff %}				
+<h3>New abr for  {{ abr }}</h3>
+
+
+<label for="abrselect">Mutiple select list (hold shift to select more than one):</label>
+<select id="abrselect" multiple class = "form-control">
+
+{% for stream in streamlistnonabr %}
+	
+        	<option {% for streamexist in streamabrexisting %}{% if stream.name == streamexist %}selected="selected"{% endif %}{% endfor %} id="{{ stream.name }}" value="{{ stream.name }}">{{ stream.name }} </option>
+
+{% endfor %}
+
+</select>
+
+
+<p>	</p>	
+		
+<p> &nbsp;  &nbsp;Select all the bitrates to add to abr <input type="text" name="valabr" id="valabr" value="{{ abr }}">  </input> and click &nbsp;
+	<input hidden type="text" name="valp" id="valp" value="x"> 
+	<input onclick="insertTsoNote();" class="btn btn-primary btn-sm" id="editabrbtn" type="submit" href="/Updateabr/" value="Submit" /></p>
+ <p>	</p>
+ {% endif %}
+  <script>
+	function insertTsoNote(){
+	        var tnl = document.getElementById("abrselect");
+	         str=""
+	        for(i=0;i<tnl.length;i++){
+	            if(tnl.options[i].selected == true){
+	            	
+	            	str+='"'+tnl.options[i].value+'" : {},'
+	            }
+	        	
+	            document.getElementById("valp").value=str
+	        }
+	     
+	    }
+	
+	</script>
+   </form>    		
+	{% endif %}
+
+
+
+				   </tbody> 
+				</table>
+				
+	
+   </form>    
+   
+ 	 {% if bitrate %} 
+ <form  method="post" action="/EditStream/">
+	  <table class="table">
+	  <h4 class="modal-title">Stream Edit Page</h4>
+	  </br>
+	<tr>
+	<th >Stream Name</th>  
+	<center><font color="red"> {{ erroredit }}</font></center>
+	<td>
+	<input hidden type=text size="40"  value="{{ streamviewname }}" id="streaminview" name="streaminview"></input>
+	<input disabled type=text size="40"  value="{{ streamviewname }}" id="editinview" name="editinview"></input>
+	</td>
+	</tr>
+	<tr>
+	
+		<th > Stream Type:</th> 
+		<td>	
+		<select id="editstreamtype" name="editstreamtype" >
+			<option value="{{ streamtype }}">{{ streamtype }} (Existing)</option>
+			<option value="std/flv">std/flv</option>
+			<option value="std/ehls">std/ehls</option>
+			<option value="std/aac">std/aac</option>
+				<option value="std/mp3">std/mp3</option>
+			<option value="std/mpegts">std/mpegts</option>
+			
+			{% if user.is_superuser %}
+			<option value="std/smooth">std/smooth</option>
+			<option value="std/asf">std/asf</option>
+			{% endif %}
+		</select>
+		</td>
+
+		
+		</tr>
+		
+		<tr>
+	
+		<th > Publish:</th> 
+		<td>	
+		<select id="editpublish" name="editpublish" >
+			<option value="{{ publish }}">{{ publish }} (Existing)</option>
+			<option value="true">true</option>
+			<option value="false">false</option>
+			
+		</select>
+		</td>
+
+		
+		</tr>
+		{% if not erroredit  %}
+		<tr>
+		
+			<th > Bitrate in k:</th>
+		
+			<td><input type="integer" value="{{ bitrate }}" onfocusout="ValidateBitrate()" id="editmaxbr" name="editmaxbr"  />
+			</td>
+			</tr>
+			{% endif %}
+	<script>
+function ValidateBitrate() 
+{
+	
+    var inp = document.getElementById("editmaxbr");
+    
+    
+			if (inp.value<64)
+				{
+				alert('Bitrate cant be less than 64');
+				return false;
+				}
+			
+			{% if user.is_staff %}
+			if (inp.value>5000)
+			{
+			alert('Bitrate cant be greater than 5000');
+			return false;
+			}
+			{% endif %}
+ 
+            if(!/^[0-9]*$/.test(inp.value))
+            {
+            	
+                alert('Invalid value detected in Bitrate in k:');
+                
+                return false;
+            }
+        
+    return true;
+}
+</script>
+		
+		
+{% if user.is_staff  %}
+		<tr>
+			<th >Max Bitrate (readonly) :</th>
+			<td><input type="integer" disabled value="{{ actualbr }}" id="romaxbr" name="romaxbr"  /><a href="" data-toggle="tooltip" data-placement="right" title="eg. 200 Please Note By default 30% will be added to bitrate  "> what is this ?</a>
+			</td>
+		
+		</tr>
+{% endif %}
+		
+		
+		
+		{% if streampassword %}
+		<tr>
+			<th >Password  (readonly) :</th>
+			<td><input type="integer" disabled value="{{ streampassword }}" id="romaxbr" name="romaxbr"  /><a href="" data-toggle="tooltip" data-placement="right" title="eg. Stream Password  "> what is this ?</a>
+			</td>
+		
+		</tr>
+		<div class="modal-footer"></div>
+		{% endif %}
+		{% if not erroredit  %}
+		{% if user.is_superuser or user.is_staff %}
+		<th>&nbsp;</th>
+		<td >
+	<input id="editstreambtn" type="submit" class="btn btn-primary btn-sm"  value="Update Stream" />
+		
+		
+		</td>
+	{% endif %}
+	{% endif %}
+	</tr>
+	
+	
+	<script>
+	{% if erroredit %}
+	document.getElementById("editstreamtype").disabled=true
+	document.getElementById("editpublish").disabled=true
+	document.getElementById("editmaxbr").disabled=true
+	document.getElementById("editmaxbr").hidden=true
+	document.getElementById("editinview").disabled=true
+	
+	{% endif %}
+	</script>
+	
+	
+	<script>
+	{% if not user.is_staff %}
+	document.getElementById("editstreamtype").disabled=true
+	document.getElementById("editpublish").disabled=true
+	document.getElementById("editmaxbr").disabled=true
+	document.getElementById("editinview").disabled=true
+	document.getElementById("editabrbtn").disabled=true
+	document.getElementById("updateabr").disabled=true
+	{% endif %}
+	
+
+	</script>
+
+	</table>
+</form>  
+  	 {% endif %}
+ <div id="Editabrmodal" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button onclick="javascript:window.location.reload()" type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="javascript:window.location.reload()" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+  </div>
+</div>
+</div>

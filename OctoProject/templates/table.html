@@ -1,0 +1,1462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8">
+<meta charset="utf-8">
+<style>
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+
+<style type="text/css">
+table {
+  font-family: "Helvetica", "Lucida Sans", "Lucida Sans Unicode", "Luxi Sans", Tahoma, sans-serif;
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table {
+  margin: auto;
+}
+table, td, th {
+  padding: 7px;
+  text-align: center;
+  border: 1px solid rgb(8,48,107);
+}
+th {
+  background-color: rgb(8,81,156);
+  color: white;
+}
+</style>
+<style>
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+<title>Octoshape Stream Setup</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<style>
+			.table {margin-bottom: 0;}
+		</style>
+
+<link rel="stylesheet" href="{{ STATIC_URL }}/static/css/screen.css" type="text/css" media="screen" title="default" />
+<!--[if IE]>
+<link rel="stylesheet" media="all" type="text/css" href="css/pro_dropline_ie.css" />
+<![endif]-->
+
+
+<!--  jquery core -->
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}/static/js/jquery/mountable.min.js" type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}/static/js/jquery/mountable.js" type="text/javascript"></script>
+<script>
+$( document ).ready(
+	       function() 
+$('#example1').mounTable(jsonContentSimple);
+
+
+<!--  checkbox styling script -->
+<script src="{{ STATIC_URL }}/static/js/jquery/ui.core.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/static/js/jquery/ui.checkbox.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.bind.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$('input').checkBox();
+	$('#toggle-all').click(function(){
+ 	$('#toggle-all').toggleClass('toggle-checked');
+	$('#mainform input[type=checkbox]').checkBox('toggle');
+	return false;
+	});
+});
+</script>  
+
+<div class="gist-sources"></div>
+<div class="clear">&nbsp;</div>
+
+
+
+<script src="{{ STATIC_URL }}/static/js/jquery/tree.js"></script>
+<script>
+
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+    width = 960 - margin.right - margin.left,
+    height = 800 - margin.top - margin.bottom;
+
+var i = 0,
+    duration = 750,
+    root;
+
+var tree = d3.layout.tree()
+    .size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("{{ STATIC_URL }}/static/js/jquery/jsonex.json", function(error, flare) {
+  if (error) throw error;
+
+  root = flare;
+  root.x0 = height / 2;
+  root.y0 = 0;
+
+  function collapse(d) {
+    if (d.children) {
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
+    }
+  }
+
+  root.children.forEach(collapse);
+  update(root);
+});
+
+d3.select(self.frameElement).style("height", "800px");
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+      links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+  // Update the nodes…
+  var node = svg.selectAll("g.node")
+      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .on("click", click);
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeEnter.append("text")
+      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+      .text(function(d) { return d.name; })
+      .style("fill-opacity", 1e-6);
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+      .attr("r", 4.5)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeUpdate.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+      .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Update the links…
+  var link = svg.selectAll("path.link")
+      .data(links, function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      });
+
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+      .duration(duration)
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}
+
+// Toggle children on click.
+function click(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+  update(d);
+}
+
+</script>
+
+
+<![if !IE 7]>
+
+
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.dynatable.js" type="text/javascript"></script>
+<script>
+$( document ).ready(
+	       function() {
+	           var jsontabledata = [
+	                    {
+	                    "id":  1 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$",
+	                    },
+	                    {
+	                    "id":  2 ,
+	                    "name": "$2$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$",
+	                    },
+	                    {
+	                    "id":  3 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\LaTeX$",
+	                    },
+	                    {
+	                    "id":  4 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$ a",
+	                    },
+	                    {
+	                    "id":  5 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$ a",
+	                    },
+	                    {
+	                    "id":  6 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$ a",
+	                    },
+	                    {
+	                    "id":  7 ,
+	                    "name": "$1$ test",
+	                    "titel": "some latex/mathjax: $\\sum_a^b$ a",
+	                    },
+	                    ];
+	           var $records = $('#jsontabledata'),
+	           myRecords = JSON.parse($records.text());
+	     	  $('#my-final-table').dynatable({
+	         dataset: {
+	           records: myRecords
+	         }
+	       });
+	        }
+	    );
+</script>
+
+
+<!--  styled select box script version 1 -->
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.styledselect').selectbox({ inputClass: "selectbox_styled" });
+});
+</script>
+ 
+
+<![endif]>
+
+<!--  styled select box script version 2 --> 
+
+
+
+
+<!--  styled select box script version 2 --> 
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5_style_2.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.styledselect_form_1').selectbox({ inputClass: "styledselect_form_1" });
+	$('.styledselect_form_2').selectbox({ inputClass: "styledselect_form_2" });
+});
+</script>
+
+<!--  styled select box script version 3 --> 
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5_style_2.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.styledselect_pages').selectbox({ inputClass: "styledselect_pages" });
+});
+</script>
+
+<!--  styled file upload script --> 
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.filestyle.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+      $("input.file_1").filestyle({ 
+          image: "images/forms/choose-file.gif",
+          imageheight : 21,
+          imagewidth : 78,
+          width : 310
+      });
+  });
+</script>
+
+<!-- Custom jquery scripts -->
+<script src="{{ STATIC_URL }}/static/js/jquery/custom_jquery.js" type="text/javascript"></script>
+ 
+<!-- Tooltips -->
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.tooltip.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.dimensions.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	$('a.info-tooltip ').tooltip({
+		track: true,
+		delay: 0,
+		fixPNG: true, 
+		showURL: false,
+		showBody: " - ",
+		top: -35,
+		left: 5
+	});
+});
+</script> 
+
+
+<!--  date picker script -->
+<link rel="stylesheet" href="{{ STATIC_URL }}/static/css/datePicker.css" type="text/css" />
+<script src="{{ STATIC_URL }}/static/js/jquery/date.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.datePicker.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+        $(function()
+{
+
+// initialise the "Select date" link
+$('#date-pick')
+	.datePicker(
+		// associate the link with a date picker
+		{
+			createButton:false,
+			startDate:'01/01/2005',
+			endDate:'31/12/2020'
+		}
+	).bind(
+		// when the link is clicked display the date picker
+		'click',
+		function()
+		{
+			updateSelects($(this).dpGetSelected()[0]);
+			$(this).dpDisplay();
+			return false;
+		}
+	).bind(
+		// when a date is selected update the SELECTs
+		'dateSelected',
+		function(e, selectedDate, $td, state)
+		{
+			updateSelects(selectedDate);
+		}
+	).bind(
+		'dpClosed',
+		function(e, selected)
+		{
+			updateSelects(selected[0]);
+		}
+	);
+	
+var updateSelects = function (selectedDate)
+{
+	var selectedDate = new Date(selectedDate);
+	$('#d option[value=' + selectedDate.getDate() + ']').attr('selected', 'selected');
+	$('#m option[value=' + (selectedDate.getMonth()+1) + ']').attr('selected', 'selected');
+	$('#y option[value=' + (selectedDate.getFullYear()) + ']').attr('selected', 'selected');
+}
+// listen for when the selects are changed and update the picker
+$('#d, #m, #y')
+	.bind(
+		'change',
+		function()
+		{
+			var d = new Date(
+						$('#y').val(),
+						$('#m').val()-1,
+						$('#d').val()
+					);
+			$('#date-pick').dpSetSelected(d.asString());
+		}
+	);
+
+// default the position of the selects to today
+var today = new Date();
+updateSelects(today.getTime());
+
+// and update the datePicker to reflect it...
+$('#d').trigger('change');
+});
+</script>
+
+<!-- MUST BE THE LAST SCRIPT IN <HEAD></HEAD></HEAD> png fix -->
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.pngFix.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$(document).pngFix( );
+});
+</script>
+</head>
+<body> 
+
+
+
+
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+	<!-- start logo -->
+	<div id="logo">
+	<a href=""><img src="{{ STATIC_URL }}/static/images/shared/logo.png" width="156" height="40" alt="" /></a>
+	</div>
+	<!-- end logo -->
+	
+	<!--  start top-search -->
+	<div id="top-search">
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		<td><input type="text" value="Search" onblur="if (this.value=='') { this.value='Search'; }" onfocus="if (this.value=='Search') { this.value=''; }" class="top-search-inp" /></td>
+		<td>
+		<select  class="styledselect">
+			<option value=""> All</option>
+			<option value=""> Stream</option>
+			<option value=""> CPCode</option>
+			<option value="">Clients</option>
+			<option value="">News</option>
+		</select> 
+		</td>
+		<td>
+		<form action="/table">
+		<input type="submit" src="{{ STATIC_URL }}/static/images/shared/top_search_btn.gif"  />
+		</form>
+		</td>
+		</tr>
+		</table>
+	</div>
+ 	<!--  end top-search -->
+ 	<div class="clear"></div>
+
+</div>
+<!-- End: page-top -->
+
+</div>
+<!-- End: page-top-outer -->
+		
+<div class="gist-readme"></div>
+
+
+ 
+<!--  start nav-outer-repeat................................................................................................. START -->
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+		<!-- start nav-right -->
+		<div id="nav-right">
+		
+			<div class="nav-divider">&nbsp;</div>
+			<div class="showhide-account"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_myaccount.gif" width="93" height="14" alt="" /></div>
+			<div class="nav-divider">&nbsp;</div>
+			<a href="/signout" id="logout"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_logout.gif" width="64" height="14" alt="" /></a>
+			<div class="clear">&nbsp;</div>
+		
+			<!--  start account-content -->	
+			<div class="account-content">
+			<div class="account-drop-inner">
+				<a href="" id="acc-settings">Settings</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-details">Personal details </a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-project">Project details</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-inbox">Inbox</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-stats">Statistics</a> 
+			</div>
+			</div>
+			<!--  end account-content -->
+		
+		</div>
+		<!-- end nav-right -->
+
+
+
+		<!--  start nav -->
+		<div class="nav">
+		<div class="table">
+		
+		<ul class="select"><li><a href="#nogo"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+		<div class="select_sub">
+			<ul class="sub">
+				<li><a href="#nogo">CCare</a></li>
+				<li><a href="#nogo">Media team </a></li>
+				<li><a href="#nogo">Octoshape Superusers</a></li>
+			</ul>
+		</div>
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+		
+		<div class="nav-divider">&nbsp;</div>
+		                    
+		<ul class="current"><li><a href="#nogo"><b>Products</b><!--[if IE 7]><!--></a><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+		<div class="select_sub show">
+			<ul class="sub">
+				<li><a href="#nogo">View all Streams</a></li>
+				<li class="sub_show"><a href="#nogo">Add new stream</a></li>
+				<li><a href="#nogo">Delete stream</a></li>
+			</ul>
+		</div>
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+		
+		<div class="nav-divider">&nbsp;</div>
+		
+		<ul class="select"><li><a href="#nogo"><b>Categories</b><!--[if IE 7]><!--></a><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+		<div class="select_sub">
+			<ul class="sub">
+				<li><a href="#nogo">Categories1</a></li>
+				<li><a href="#nogo">Categories2</a></li>
+				<li><a href="#nogo">Categories3</a></li>
+			</ul>
+		</div>
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+		
+		<div class="nav-divider">&nbsp;</div>
+		
+		<ul class="select"><li><a href="#nogo"><b>Clients</b><!--[if IE 7]><!--></a><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+		<div class="select_sub">
+			<ul class="sub">
+				<li><a href="#nogo">Clients1</a></li>
+				<li><a href="#nogo">Clients2</a></li>
+				<li><a href="#nogo">Clients3</a></li>
+			 
+			</ul>
+		</div>
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+		
+		<div class="nav-divider">&nbsp;</div>
+		
+		<ul class="select"><li><a href="#nogo"><b>News</b><!--[if IE 7]><!--></a><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+		<div class="select_sub">
+			<ul class="sub">
+				<li><a href="#nogo">News details 1</a></li>
+				<li><a href="#nogo">News details 2</a></li>
+				<li><a href="#nogo">News details 3</a></li>
+			</ul>
+		</div>
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+		
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		</div>
+		
+		<!--  start nav -->
+
+</div>
+<div class="clear"></div>
+<!--  start nav-outer -->
+</div>
+<!--  start nav-outer-repeat................................................... END -->
+
+ <div class="clear"></div>
+ 
+<!-- start content-outer ........................................................................................................................START -->
+<div id="content-outer">
+<!-- start content -->
+<div id="content">
+
+	<!--  start page-heading -->
+	<div id="page-heading">
+		<h1>Existing Streams</h1>
+	</div>
+	<!-- end page-heading -->
+
+	<table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+	<tr>
+		<th rowspan="3" class="sized"><img src="{{ STATIC_URL }}/static/images/shared/side_shadowleft.jpg" width="20" height="300" alt="" /></th>
+		<th class="topleft"></th>
+		<td id="tbl-border-top">&nbsp;</td>
+		<th class="topright"></th>
+		<th rowspan="3" class="sized"><img src="{{ STATIC_URL }}/static/images/shared/side_shadowright.jpg" width="20" height="300" alt="" /></th>
+	</tr>
+	<tr>
+		<td id="tbl-border-left"></td>
+		<td>
+	
+		
+	<!--  
+	
+	start content-table-inner ...................................................................... START -->
+		<div id="content-table-inner">
+		
+			<!--  start table-content  -->
+			<div id="table-content">
+			
+				<!--  start message-yellow 
+				<div id="message-yellow">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="yellow-left">You have a new message. <a href="">Go to Inbox.</a></td>
+					<td class="yellow-right"><a class="close-yellow"><img src="{{ STATIC_URL }}/static/images/table/icon_close_yellow.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-yellow -->
+				
+				<!--  start message-red 
+				<div id="message-red">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="red-left">Error. <a href="">Please try again.</a></td>
+					<td class="red-right"><a class="close-red"><img src="{{ STATIC_URL }}/static/images/table/icon_close_red.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-red -->
+				
+				<!--  start message-blue 
+				<div id="message-blue">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="blue-left">Welcome back. <a href="">View my account.</a> </td>
+					<td class="blue-right"><a class="close-blue"><img src="{{ STATIC_URL }}/static/images/table/icon_close_blue.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-blue 
+			
+				<!--  start message-green 
+				<div id="message-green">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="green-left">Product added sucessfully. <a href="">Add new one.</a></td>
+					<td class="green-right"><a class="close-green"><img src="{{ STATIC_URL }}/static/images/table/icon_close_green.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-green -->
+				
+		 
+				<!--  start product-table ..................................................................................... -->
+				<form id="mainform" action="">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0" id="product-table">
+				<tr>
+					<th class="table-header-check"><a id="toggle-all" ></a> </th>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Stream Name</a>	</th>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Aspect</a></th>
+					<th class="table-header-repeat line-left"><a href="">Playback URL</a></th>
+					<th class="table-header-repeat line-left"><a href="">CPcode</a></th>
+					<th class="table-header-repeat line-left"><a href="">status</a></th>
+					<th class="table-header-options line-left"><a href="">Options</a></th>
+				</tr>
+				<tr>
+					<td><input  type="checkbox"/></td>
+					<td><a href="http://demo.octoshape.com/jah/vod?stream=">/turner/live/flv/test</a></td>
+					<td>live</td>
+					<td><a href="http://demo.octoshape.com/jah/vod?stream=">http://demo.octoshape.com/jah/vod?stream=</a></td>
+					<td>12250</td>
+					<td><a href="">abr,geo</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				<tr class="alternate-row">
+					<td><input  type="checkbox"/></td>
+					<td>/turner/live/flv/test</td>
+					<td>ond</td>
+					<td><a href="http://demo.octoshape.com/jah/vod?stream=">http://demo.octoshape.com/jah/vod?stream=</a></td>
+					<td>12250</td>
+					<td><a href="">abr,geo</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				<tr>
+					<td><input  type="checkbox"/></td>
+					<td>Sabev</td>
+					<td>bGeorge</td>
+					<td><a href="">george@mainevent.co.za</a></td>
+					<td>R250</td>
+					<td><a href="">www.mainevent.co.za</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				<tr class="alternate-row">
+					<td><input  type="checkbox"/></td>
+					<td>Sabev</td>
+					<td>George</td>
+					<td><a href="">george@mainevent.co.za</a></td>
+					<td>R250</td>
+					<td><a href="">www.mainevent.co.za</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				<tr>
+					<td><input  type="checkbox"/></td>
+					<td>Sabev</td>
+					<td>George</td>
+					<td><a href="">george@mainevent.co.za</a></td>
+					<td>R250</td>
+					<td><a href="">www.mainevent.co.za</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				<tr class="alternate-row">
+					<td><input  type="checkbox"/></td>
+					<td>Sabev</td>
+					<td>cGeorge</td>
+					<td><a href="">george@mainevent.co.za</a></td>
+					<td>R250</td>
+					<td><a href="">www.mainevent.co.za</a></td>
+					<td class="options-width">
+					<a href="" title="Edit" class="icon-1 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-2 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-3 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-4 info-tooltip"></a>
+					<a href="" title="Edit" class="icon-5 info-tooltip"></a>
+					</td>
+				</tr>
+				</table>
+				<!--  end product-table................................... --> 
+				</form>
+			</div>
+			<!--  end content-table  -->
+		
+			<!--  start actions-box ............................................... -->
+			<div id="actions-box">
+				<a href="" class="action-slider"></a>
+				<div id="actions-box-slider">
+					<a href="" class="action-edit">Edit</a>
+					<a href="" class="action-delete">Delete</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!-- end actions-box........... -->
+			
+			<!--  start paging..................................................... -->
+			<table border="0" cellpadding="0" cellspacing="0" id="paging-table">
+			<tr>
+			<td>
+				<a href="" class="page-far-left"></a>
+				<a href="" class="page-left"></a>
+				<div id="page-info">Page <strong>1</strong> / 15</div>
+				<a href="" class="page-right"></a>
+				<a href="" class="page-far-right"></a>
+			</td>
+			<td>
+			<select  class="styledselect_pages">
+				<option value="">Number of rows</option>
+				<option value="">1</option>
+				<option value="">2</option>
+				<option value="">3</option>
+			</select>
+			</td>
+			</tr>
+			</table>
+			<!--  end paging................ -->
+			
+			<div class="clear"></div>
+		 
+		</div>
+		<!--  end content-table-inner ............................................END  -->
+		</td>
+		<td id="tbl-border-right"></td>
+	</tr>
+	<tr>
+		<th class="sized bottomleft"></th>
+		<td id="tbl-border-bottom">&nbsp;</td>
+		<th class="sized bottomright"></th>
+	</tr>
+	</table>
+	
+	<!--  styled select box script version 1 -->
+<script src="{{ STATIC_URL }}/static/js/jquery/jquery.dynatable.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+</script>
+
+<div class="gist-sources"></div>
+	
+<h4>The result</h4>
+			<div class="well">
+				<form action="#">
+					<table class="table" id="example2">
+						<thead>
+							<tr>
+								<th style="width: 10%;">#</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Techniques</th>
+								<th>Email</th>
+								<th>Sex</th>
+								<th>Location</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="mountable-model">
+								<td><input type="text" name="number[]" class="form-control"></td>
+								<td><input type="text" name="first_name[]" class="form-control"></td>
+								<td><input type="text" name="last_name[]" class="form-control"></td>
+								<td>
+									<select name="techniques[]" class="form-control">
+										<option value=""></option>
+									</select>
+								</td>
+								<td><input type="text" name="email[]" class="form-control"></td>
+								<td nowrap="nowrap" style="vertical-align: middle;">
+									<input type="checkbox" name="sex[]" value="Male"> M
+									<input type="checkbox" name="sex[]" value="Female"> F
+								</td>
+								<td>
+									<select name="location[]" class="form-control">
+										<option value=""></option>
+										<option value="Brazil">Brazil</option>
+										<option value="Canada">Canada</option>
+										<option value="China">China</option>
+										<option value="United Kingdom">United Kingdom</option>
+										<option value="United States">United States</option>
+									</select>
+								</td>
+								<td><button type="button" class="btn btn-default mountable-remove-line-2">Remove</button></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3"><button type="button" class="btn btn-default" id="button2">Add a new line</button></td>
+							</tr>
+						</tfoot>
+					</table>
+				</form>
+			</div>
+
+			<p>Like it? <a href="https://github.com/guimadaleno/mountable" target="_blank">Give it a star</a>.</p>
+
+		</div>
+
+
+	</body>
+	
+	<script src="http://d3js.org/d3.v3.js"></script>​
+<script>
+jdata = [
+    {
+        "name":"bob",
+        "salary":13000,
+        "friends":[
+            {
+                "name": "sarah",
+                "salary":10000
+            },
+            {
+                "name": "bill",
+                "salary":5000
+            }
+        ]
+    },
+    {
+        "name":"marge",
+        "salary":10000,
+        "friends":[
+            {
+                "name": "rhonda",
+                "salary":10000
+            },
+            {
+                "name": "mike",
+                "salary":5000,
+                "hobbies":[
+                    {
+                        "name":"surfing",
+                        "frequency":10
+                    },
+                    {
+                        "name":"surfing",
+                        "frequency":15
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"joe",
+        "salary":10000,
+        "friends":[
+            {
+                "name": "harry",
+                "salary":10000
+            },
+            {
+                "name": "sally",
+                "salary":5000
+            }
+        ]
+    }
+];
+
+
+d3.select("body").selectAll("table")
+    .data([jdata])
+  .enter().append("table")
+    .call(recurse);
+
+function recurse(sel) {
+  // sel is a d3.selection of one or more empty tables
+  sel.each(function(d) {
+    // d is an array of objects
+    var colnames,
+        tds,
+        table = d3.select(this);
+
+    // obtain column names by gathering unique key names in all 1st level objects
+    // following method emulates a set by using the keys of a d3.map()
+    colnames = d                                                          // array of objects
+        .reduce(function(p,c) { return p.concat(d3.keys(c)); }, [])       // array with all keynames
+        .reduce(function(p,c) { return (p.set(c,0), p); }, d3.map())      // map with unique keynames as keys
+        .keys();                                                          // array with unique keynames (arb. order)
+
+    // colnames array is in arbitrary order
+    // sort colnames here if required
+
+    // create header row using standard 1D data join and enter()
+    table.append("thead").append("tr").selectAll("th")
+        .data(colnames)
+      .enter().append("th")
+        .text(function(d) { return d; });
+
+    // create the table cells by using nested 2D data join and enter()
+    // see also http://bost.ocks.org/mike/nest/
+    tds = table.append("tbody").selectAll("tr")
+        .data(d)                            // each row gets one object
+      .enter().append("tr").selectAll("td")
+        .data(function(d) {                 // each cell gets one value
+          return colnames.map(function(k) { // for each colname (i.e. key) find the corresponding value
+            return d[k] || "";              // use empty string if key doesn't exist for that object
+          });
+        })
+      .enter().append("td");
+
+    // cell contents depends on the data bound to the cell
+    // fill with text if data is not an Array
+    tds.filter(function(d) { return !(d instanceof Array); })
+        .text(function(d) { return d; });
+    // fill with a new table if data is an Array
+    tds.filter(function(d) { return (d instanceof Array); })
+        .append("table")
+        .call(recurse);
+  });
+}
+</script>
+	
+	
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}/static/js/jquery/mountable.js"></script>
+	<script>
+
+		$(document).ready(function()
+		{
+
+			/* A basic JSON example */
+
+			var jsonContentSimple =
+			[
+			    {
+			        "first_name": "John",
+			        "last_name": "Appleseed",
+			        "email": "john@appleseed.com"
+			    },
+			    {
+			    	"first_name": "João",
+			    	"last_name": "Canabrava",
+			    	"email": "joao@canabrava.com"
+			    },
+			    {
+			        "first_name": "Patrick",
+			        "last_name": "Grapeseed",
+			        "email": "patrick@grapeseed.com"
+			    },
+			    {
+			    	"first_name": "Xingling",
+			    	"last_name": "Ping Pong",
+			    	"email": "xingling@pingpong.com"
+			    }
+			];
+
+			/* A complex JSON example */
+
+			var jsonContentComplex =
+			[
+			   
+
+			 
+			 
+			 {
+			        "number": 1,
+			        "first_name": "John",
+			        "last_name": "Appleseed",
+			        "email": "john@appleseed.com",
+			        "sex": "Male",
+			        "techniques":
+			        [
+			        	"Can vanish",
+			        	"Is strong",
+			        	"Like Apples"
+			        ],
+			        "location": "United States"
+			    },
+			    {
+			    	"number": 1,
+			    	"first_name": "João",
+			    	"last_name": "Canabrava",
+			    	"email": "joao@canabrava.com",
+			    	"sex": "Male",
+			    	"techniques":
+			    	[
+			    		"Is always drunk",
+			    		"Stronger liver",
+			    		"Caipirinha adept"
+			    	],
+			    	"location": "Brazil"
+			    },
+			    {
+			        "number": 3,
+			        "first_name": "Patrick",
+			        "last_name": "Grapeseed",
+			        "email": "patrick@grapeseed.com",
+			        "sex": "Male",
+			        "techniques":
+			        [
+			        	"Hates grapes",
+			        	"It has a grape head"
+			        ],
+			        "location": "United Kingdom"
+			    },
+			    {
+			    	"number": 4,
+			    	"first_name": "Xingling",
+			    	"last_name": "Ping Pong",
+			    	"email": "xingling@pingpong.com",
+			    	"sex": "Female",
+			    	"techniques":
+			    	[
+			    		"Works at AliExpress",
+			    		"Slavery adept"
+			    	],
+			    	"location": "China"
+			    },
+			    
+			    { 
+			    	"number": 5,
+			            						"first_name": "std/mpegts",
+			         						   "last_name": 600000,
+			         						   "email": "2015-12-09 16:33:56.218",
+			        						 
+			    }
+			];
+
+			/* Activates the quick example */
+
+			$('#example1').mounTable(jsonContentSimple,
+			{
+				model: '.mountable-model'
+			});
+
+			/* Activates the complete example */
+
+			$('#example2').mounTable(jsonContentComplex,
+			{
+
+				/* The model class */
+
+				model: '.mountable-model',
+
+				/* No console messages */
+
+				noDebug: false,
+
+				/* Options to your new line button */
+
+				addLine:
+				{
+
+					/* New line button selector */
+
+					button: "#button2",
+
+					/* Callback function */
+
+					onClick: function (element)
+					{
+						console.log('Line added!');
+						return true;
+					}
+				},
+
+				/* Options to your delete line button */
+
+				deleteLine:
+				{
+
+					/* Delete line button selector */
+
+					button: ".mountable-remove-line-2",
+
+					/* Callback function */
+
+					onClick: function (element)
+					{
+						if (confirm("Are you sure?"))
+						{
+							console.log('Line removed!');
+							return true;
+						}
+					}
+
+				}
+
+			});
+
+		});
+
+	</script>
+
+<div class="gist-readme"></div>
+
+<div class="gist-sources"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+    width = 960 - margin.right - margin.left,
+    height = 800 - margin.top - margin.bottom;
+
+var i = 0,
+    duration = 750,
+    root;
+
+var tree = d3.layout.tree()
+    .size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("http://bl.ocks.org/mbostock/raw/4063550/flare.json", function(error, flare) {
+  if (error) throw error;
+
+  root = flare;
+  root.x0 = height / 2;
+  root.y0 = 0;
+
+  function collapse(d) {
+    if (d.children) {
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
+    }
+  }
+
+  root.children.forEach(collapse);
+  update(root);
+});
+
+d3.select(self.frameElement).style("height", "800px");
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+      links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+  // Update the nodes…
+  var node = svg.selectAll("g.node")
+      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .on("click", click);
+
+  nodeEnter.append("circle")
+      .attr("r", 1e-6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeEnter.append("text")
+      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+      .text(function(d) { return d.name; })
+      .style("fill-opacity", 1e-6);
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+      .attr("r", 4.5)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeUpdate.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+      .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Update the links…
+  var link = svg.selectAll("path.link")
+      .data(links, function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      });
+
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+      .duration(duration)
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}
+
+// Toggle children on click.
+function click(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+  update(d);
+}
+
+</script>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var width = 960,
+    height = 2000;
+
+var tree = d3.layout.tree()
+    .size([height, width - 160]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(40,0)");
+
+d3.json("http://bl.ocks.org/mbostock/raw/4063550/flare.json", function(error, json) {
+  if (error) throw error;
+
+  var nodes = tree.nodes(json),
+      links = tree.links(nodes);
+
+  var link = svg.selectAll("path.link")
+      .data(links)
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);
+
+  var node = svg.selectAll("g.node")
+      .data(nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+  node.append("circle")
+      .attr("r", 4.5);
+
+  node.append("text")
+      .attr("dx", function(d) { return d.children ? -8 : 8; })
+      .attr("dy", 3)
+      .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
+      .text(function(d) { return d.name; });
+});
+
+d3.select(self.frameElement).style("height", height + "px");
+
+</script>
+
+
+	<div class="clear">&nbsp;</div>
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+</div>
+<!--  end content-outer........................................................END -->
+
+<div class="clear">&nbsp;</div>
+    
+<!-- start footer -->         
+<div id="footer">
+	<!--  start footer-left -->
+	<div id="footer-left">
+	<p>                    
+	       &nbsp;  &nbsp; &copy; Copyright . <a href="">www.Octoshape.com</a>. All rights reserved.</div>
+	       </p>
+	 
+	<!--  end footer-left -->
+	<div class="clear">&nbsp;</div>
+</div>
+<!-- end footer -->
+ 
+</body>
+</html>

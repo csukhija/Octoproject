@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block extrahead %}
+	  <style type="text/css">
+	    body {
+	      font-family:"Trebuchet MS",sans-serif;   
+	    }
+	    #header {
+	      background:#092e20;
+	      border-bottom: 10px solid #E0FFB8;
+	    }
+	    thead th,
+	    tfoot td,
+	    {
+	        background: #E0FFB8 !important;
+	    }
+	    .module h2, .module caption, .inline-group h2
+	     {
+	        background: #E0FFB8 !important;
+	    }
+	
+	    .module caption a
+	    {
+	      color: #666 !important;
+	      font-size: 18px;
+	    }
+	
+	    table.orderable tbody tr td:first-child {
+	        background: #E0FFB8 !important;
+	    }
+	
+	    h1#site-name
+	    {
+	      font-size: 24px;
+	      font-weight: bold;
+	      color: #FFF;
+	    }
+	  </style>
+	{% endblock %}
+{% block title %}{{ title }} | {% trans 'Octo Ops ISPP Admin Portal' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'ISPP Administrator Page' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
