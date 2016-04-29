@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 
 # Register your models here.
 class Streamlist(admin.ModelAdmin):
-    list_display = ('name', 'aspect')
-    list_filter = ('aspect',)
+    list_display = ('name', 'aspect','bitrate','publish','streamtype','password')
+    list_filter = ('aspect','streamtype','publish')
     search_fields = ['name']
 admin.site.register(streams,Streamlist)
 
