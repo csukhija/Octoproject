@@ -440,6 +440,10 @@ $(document).pngFix( );
             <th>Stream Name</th>  
             <th>Aspect</th>  
             <th>CPcode</th> 
+            <th>bitrate</th> 
+            <th>Streamtype</th> 
+            <th>publish</th> 
+            <th>password</th> 
             {% if user.is_superuser or user.is_staff %} 
         	<th> Edit</th>
         	<th>*Delete*</th>
@@ -486,7 +490,10 @@ $(document).pngFix( );
 					<td onclick="javascript:window.location.reload()" ><a id="y" href=/lstream/{{ stream.name }} >{{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
-					
+					<td>{{ stream.aspect }}</td>
+					<td>{{ stream.aspect }}</td>
+					<td>{{ stream.aspect }}</td>
+					<td>{{ stream.aspect }}</td>
 					{% if user.is_superuser %} 
 					<td hidden size="20" class="options-width">
 					<a name="{{ stream.name }}" onclick="putThis(this)" title="Edit" class="icon-1 info-tooltip"></a>
