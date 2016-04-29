@@ -15,6 +15,7 @@ import sqlite3
 from random import shuffle
 import logging
 from django.conf.global_settings import AUTH_USER_MODEL
+from admin import Streamlist
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 import octo_configs

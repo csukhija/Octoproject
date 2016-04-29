@@ -16,6 +16,10 @@ class Quota(User):
 class streams(models.Model):
     name = models.CharField(max_length=100,primary_key=True)
     aspect=models.CharField(max_length=100)
+    bitrate=models.CharField(max_length=100)
+    streamtype=models.CharField(max_length=100)
+    publish=models.CharField(max_length=100)
+    password=models.CharField(max_length=100)
   
 def __unicode__(self):
     return self.name
