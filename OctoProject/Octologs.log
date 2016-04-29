@@ -2528,3 +2528,5 @@
 [29/Apr/2016 10:53:14] INFO [login.views:676] User csukhija@akamai.com searched for bwpass/live/chirag/111k
 [29/Apr/2016 10:57:35] INFO [login.views:676] User csukhija@akamai.com searched for bwpass/live/chirag/111k
 [29/Apr/2016 10:57:37] INFO [login.views:676] User csukhija@akamai.com searched for bwpass/live/chirag/111k
+[29/Apr/2016 11:54:09] INFO [login.views:667] User csukhija@akamai.com had error deleting stream keithcdn/live/ch-keith/1200k/b HTTP Error 409: Conflict
+[29/Apr/2016 11:55:58] INFO [login.views:662] User csukhija@akamai.com deleted stream bwpass/live/chirag/111k

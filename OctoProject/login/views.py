@@ -664,7 +664,7 @@ def deletestreamconfirm(request):
 				Context = {'deletstream' : delstream,'customerlist' : customerlist }
 			except urllib2.HTTPError, e:
 				print e
-				logger.info("User "+request.user.username+" had error deleting stream "+delstream+" "+e)
+				logger.info("User "+request.user.username+" had error deleting stream "+delstream+" "+str(e))
 				Context = {'deletstream' : e,'flag1' : 0 ,'customerlist' : customerlist }
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
