@@ -460,7 +460,10 @@ $(document).pngFix( );
 					<td  id="{{ stream.name }}" data-dismiss="modal" data-toggle="modal" data-target="#myModal" href="/lstream/{{ stream.name }}" > <a > {{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
-					
+					<td><font color="brown">{{ stream.bitrate }}</font></td>
+					<td><font color="brown">{{ stream.streamtype }}</font></td>
+					<td><font color="brown">{{ stream.publish }}</font></td>
+					<td><font color="brown">{{ stream.password }}</font></td>
 				            {% if user.is_superuser or user.is_staff %} 
 					
 <td size="90" class="options-width">
@@ -491,9 +494,7 @@ $(document).pngFix( );
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
 					<td>{{ stream.aspect }}</td>
-					<td>{{ stream.aspect }}</td>
-					<td>{{ stream.aspect }}</td>
-					<td>{{ stream.aspect }}</td>
+					
 					{% if user.is_superuser %} 
 					<td hidden size="20" class="options-width">
 					<a name="{{ stream.name }}" onclick="putThis(this)" title="Edit" class="icon-1 info-tooltip"></a>
