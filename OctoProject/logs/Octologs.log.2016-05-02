@@ -1,0 +1,92 @@
+[02/May/2016 13:04:42] INFO [login.views:676] User csukhija@akamai.com searched for atest/live/cb/120k
+[02/May/2016 13:04:44] INFO [login.views:676] User csukhija@akamai.com searched for atest/live/cb/120k
+[02/May/2016 13:04:45] INFO [login.views:676] User csukhija@akamai.com searched for atest/live/cb/120k
+[02/May/2016 13:16:33] INFO [login.views:676] User csukhija@akamai.com searched for chirag/ch1/5000k
+[02/May/2016 13:16:34] INFO [login.views:676] User csukhija@akamai.com searched for chirag/ch1/5000k
+[02/May/2016 13:16:35] INFO [login.views:676] User csukhija@akamai.com searched for chirag/ch1/5000k
+[02/May/2016 13:39:09] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb/200k
+[02/May/2016 13:39:13] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb/300k
+[02/May/2016 13:39:16] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb/300k/abr
+[02/May/2016 13:40:58] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb2/200k
+[02/May/2016 13:41:02] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb2/300k
+[02/May/2016 13:41:05] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb2/300k/abr
+[02/May/2016 13:46:42] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb3/200k
+[02/May/2016 13:46:47] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb3/300k
+[02/May/2016 13:46:51] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb3/300k/abr
+[02/May/2016 13:57:15] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb4/200k
+[02/May/2016 13:57:18] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb4/300k
+[02/May/2016 13:57:22] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb4/300k/abr
+[02/May/2016 13:59:12] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb6/200k
+[02/May/2016 13:59:15] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb6/300k
+[02/May/2016 13:59:18] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb6/300k/abr
+[02/May/2016 14:15:47] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dbtest11/200k
+[02/May/2016 14:15:50] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dbtest11/300k
+[02/May/2016 14:15:54] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/dbtest11/300k/abr
+[02/May/2016 14:19:06] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dbtest12/200k
+[02/May/2016 14:19:09] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dbtest12/300k
+[02/May/2016 14:19:12] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/dbtest12/300k/abr
+[02/May/2016 14:20:30] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testddb/200k
+[02/May/2016 14:20:33] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testddb/300k
+[02/May/2016 14:20:36] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testddb/300k/abr
+[02/May/2016 14:24:49] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb13/200k
+[02/May/2016 14:24:53] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb13/300k
+[02/May/2016 14:24:56] INFO [login.views:556] User csukhija@akamai.com created stream chirag/live/testdb13/300k/abr
+[02/May/2016 14:26:18] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb14/200k
+[02/May/2016 14:26:18] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/testdb14/200k and the bitrate is  260k']
+[02/May/2016 14:28:01] INFO [login.views:541] User csukhija@akamai.com created stream QACustomer/live/dbtest14/200k
+[02/May/2016 14:28:01] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/QACustomer/live/dbtest14/200k and the bitrate is  260k']
+[02/May/2016 14:34:48] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/testdb21/200k
+[02/May/2016 14:34:48] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/testdb21/200k and the bitrate is  260k']
+[02/May/2016 14:37:44] INFO [login.views:541] User csukhija@akamai.com created stream QACustomer/live/dbtest12/222k
+[02/May/2016 14:37:44] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/QACustomer/live/dbtest12/222k and the bitrate is  288k']
+[02/May/2016 14:39:52] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dvtest/200k
+[02/May/2016 14:39:52] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/dvtest/200k and the bitrate is  260k']
+[02/May/2016 14:49:56] INFO [login.views:541] User csukhija@akamai.com created stream QACustomer/live/dbbtest/222k
+[02/May/2016 14:49:56] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/QACustomer/live/dbbtest/222k and the bitrate is  288k']
+[02/May/2016 14:54:26] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/btestdb/200k
+[02/May/2016 14:54:26] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/btestdb/200k and the bitrate is  260k']
+[02/May/2016 15:14:26] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/dbtest22/121k
+[02/May/2016 15:14:26] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/dbtest22/121k and the bitrate is  157k']
+[02/May/2016 15:57:15] INFO [login.views:685] User csukhija@akamai.com searched for bwpass/live/pass1/nopass/200k
+[02/May/2016 15:57:16] INFO [login.views:685] User csukhija@akamai.com searched for bwpass/live/pass1/nopass/200k
+[02/May/2016 15:57:18] INFO [login.views:685] User csukhija@akamai.com searched for bwpass/live/pass1/nopass/200k
+[02/May/2016 16:10:30] INFO [login.views:541] User csukhija@akamai.com created stream chirag/live/pass1/nopass/testdbnppass/200k
+[02/May/2016 16:10:30] INFO [login.views:565] User csukhija@akamai.com created streams [u'Stream Name is octoshape://streams.octoshape.net/chirag/live/pass1/nopass/testdbnppass/200k and the bitrate is  260k']
+[02/May/2016 16:13:52] INFO [login.views:541] User csukhija@akamai.com created stream bwpass/live/pass1/nopass/pass2/223k
+[02/May/2016 16:13:52] INFO [login.views:565] User csukhija@akamai.com created streams [u'****  Broadcast Password for stream is set at prefix bwpass/live/pass1/nopass/pass2/ is pass2', u'Stream Name is octoshape://streams.octoshape.net/bwpass/live/pass1/nopass/pass2/223k and the bitrate is  289k']
+[02/May/2016 16:27:06] INFO [login.views:541] User csukhija@akamai.com created stream bwpass/live/pass1/nopass/pass2/new/122k
+[02/May/2016 16:27:06] INFO [login.views:565] User csukhija@akamai.com created streams [u'The stream password is 1231pass', u'****  Broadcast Password for stream is set at prefix bwpass/live/pass1/nopass/pass2/new/ is 1231pass', u'Stream Name is octoshape://streams.octoshape.net/bwpass/live/pass1/nopass/pass2/new/122k and the bitrate is  158k']
+[02/May/2016 16:42:26] INFO [login.views:541] User csukhija@akamai.com created stream bwpass/live/pass1/nopass/s/122k
+[02/May/2016 16:42:26] INFO [login.views:565] User csukhija@akamai.com created streams [u'****  Broadcast Password for stream is set at prefix bwpass/live/pass1/ is pass1', u'Stream Name is octoshape://streams.octoshape.net/bwpass/live/pass1/nopass/s/122k and the bitrate is  158k']
+[02/May/2016 16:44:37] INFO [login.views:541] User csukhija@akamai.com created stream bwpass/live/pass1/nopass/pass2/s/200k
+[02/May/2016 16:44:37] INFO [login.views:565] User csukhija@akamai.com created streams [u'****  Broadcast Password for stream is pass2', u'Stream Name is octoshape://streams.octoshape.net/bwpass/live/pass1/nopass/pass2/s/200k and the bitrate is  260k']
+[02/May/2016 16:47:47] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:47:48] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:47:49] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:48:08] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:48:10] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:48:11] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:23] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:25] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:26] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:35] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:36] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:51:37] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:52:20] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:52:21] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:52:22] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:37] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:38] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:40] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:45] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:46] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:56:47] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:20] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:22] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:23] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:44] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:46] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:47] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:50] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:52] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k
+[02/May/2016 16:57:53] INFO [login.views:698] User csukhija@akamai.com searched for chirag/new/1220k

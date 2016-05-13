@@ -222,13 +222,13 @@ $(document).pngFix( );
 		
 		
 		<div class="nav-divider">&nbsp;</div>
-		<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">CONFIGURE
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">Infinite Services Live</a></li>
+<!-- 		<div class="dropdown"> -->
+<!--   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">CONFIGURE -->
+<!--   <span class="caret"></span></button> -->
+<!--   <ul class="dropdown-menu"> -->
+<!--     <li><a href="#">Infinite Services Live</a></li> -->
 
-  </ul>
+<!--   </ul> -->
 </div>
 
 		
@@ -270,6 +270,9 @@ $(document).pngFix( );
 <link rel="stylesheet" href="{{ STATIC_URL }}/static/css/bootstrap.min.css">
   <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/jquery.min-1.12.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <code><br/></code>
 <div class="container">
@@ -285,6 +288,8 @@ $(document).pngFix( );
     <li ><a data-toggle="tab" href="#CreateStream">Create Stream</a></li>
      {% endif  %}
      {% if user.is_superuser  %}
+     <li><a data-toggle="tab" href="#EditStream">Advanced Configuration</a></li>
+     
     <li><a data-toggle="tab" href="#ModifyStream">New Customer</a></li>
     {% endif  %}
   </ul>
@@ -440,13 +445,14 @@ $(document).pngFix( );
             <th>Stream Name</th>  
             <th>Aspect</th>  
             <th>CPcode</th> 
-            <th>bitrate</th> 
-            <th>Streamtype</th> 
-            <th>publish</th> 
-            <th>password</th> 
+            <th>Bit Rate</th> 
+            <th>Stream Type</th> 
+            <th>Publishable</th> 
+            <th>Password</th> 
             {% if user.is_superuser or user.is_staff %} 
-        	<th> Edit</th>
-        	<th>*Delete*</th>
+<!--         	<th> Edit</th> -->
+<!--         	<th>*Delete*</th> -->
+        	<th>*Options*</th>
         	{% endif  %}  
           </tr>  
         </thead>  
@@ -460,25 +466,53 @@ $(document).pngFix( );
 					<td  id="{{ stream.name }}" data-dismiss="modal" data-toggle="modal" data-target="#myModal" href="/lstream/{{ stream.name }}" > <a > {{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
-					<td>{{ stream.bitrate }}</td>
-					<td>{{ stream.streamtype }}</td>
-					<td>{{ stream.publish }}</td>
-					<td>{{ stream.password }}</td>
+					<td>{% if stream.bitrate %}{% widthratio stream.bitrate 1000 1  %}k{% endif %} </td>
+					<td>{% if stream.streamtype != None %}{{ stream.streamtype }}{% endif %}</td>
+					<td> {% if stream.publish == 1 %}True{% endif %}{% if stream.publish == 0 %}False{% endif %}</td>
+					<td>{% if stream.password != None %}{{ stream.password }}{% endif %}</td>
 				            {% if user.is_superuser or user.is_staff %} 
 					
-<td size="90" class="options-width">
 
-<a onclick="alert('Edit {{ stream.name }} ?');" data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" class="icon-1 info-tooltip"></a>			
-</td>
-<td size="90" class="options-width">
-<a   data-toggle="modal" data-target="#myModal" href="/delstream/{{stream.name}}/{{ stream.aspect }}" name="{{ stream.name }}" title="Delete" class="icon-2 info-tooltip"></a>
 
-<!-- <!-- 				
-	<a href="" title="Star" class="icon-3 info-tooltip"></a> --> 
-<!-- <!-- 					<a href="" title="Edit" class="icon-4 info-tooltip"></a> --> 
-<!-- <!-- 					<a  title="Edit" class="icon-5 info-tooltip"></a> --> 
- 
-					</td>
+<!-- <td size="90" class="options-width"> -->
+
+<!-- <a onclick="alert('Edit {{ stream.name }} ?');" data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" class="icon-1 info-tooltip"></a>			 -->
+<!-- </td> -->
+<!-- <td size="90" class="options-width"> -->
+<!-- <a   data-toggle="modal" data-target="#myModal" href="/delstream/{{stream.name}}/{{ stream.aspect }}" name="{{ stream.name }}" title="Delete" class="icon-2 info-tooltip"> -->
+
+<!-- </a> -->
+<!-- </td> -->
+					
+					<td>
+				
+	<div class="dropdown" >
+  <a 	{% if stream.readonly %}  disabled="true" {% endif %}	type="button"  class="glyphicon glyphicon-cog btn btn-default btn-sm"  data-toggle="dropdown">
+  <span class="caret"></span></a>
+  
+  {% if not stream.readonly %}
+  <ul class="dropdown-menu">
+      <li><a  onclick="alert('Edit {{ stream.name }} ?');" data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
+<i class="glyphicon glyphicon-pencil"></i> &nbsp; Edit Stream<i class="icon-pencil"></i></a></li> 
+
+
+
+ <li><a  data-toggle="modal" data-target="#myModal" href="/advconfig/{{stream.name}}" name="{{ stream.name }}" title="AdvConfig">
+<i class="glyphicon glyphicon-qrcode"></i> &nbsp; Advanced Configuration</a></li>
+
+
+<li class="divider"></li> 
+    <li><a  data-toggle="modal" data-target="#myModal" href="/delstream/{{stream.name}}/{{ stream.aspect }}" name="{{ stream.name }}" title="Delete">
+<i class="glyphicon glyphicon-trash"></i> &nbsp; Delete Stream</a></li>
+
+
+
+  </ul>
+   {% endif %} 
+</div>
+			
+					
+		</td>
 					            {% endif %} 
 					
 				</tr>
@@ -697,7 +731,7 @@ $(document).pngFix( );
    
     
     
-<div id="myModal" class="modal" id="myModal" tabindex="-1" role="dialog">
+<div id="myModal" class="modal" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -1011,7 +1045,90 @@ alert('Stream has been added sucessfully.');
       
       </p>
     </div>
+    <div id="EditStream" class="tab-pane fade">
+      <h3>	&nbsp;	&nbsp; 	Advanced Configuration</h3>
+      <p><div class="section"> 
+ 
+<h4>Advanced Configuration</h4>
 
+		<form name="parametersadd" method="post" action="/advconfig/" >
+	
+		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+
+		<tr>
+		<th valign="top">Stream Name:</th> 
+		<td>	
+		
+		
+	<input type="text" required  id="streamidedit" name="streamidedit" class="inp-form" />
+	
+		
+		</td>
+</tr>
+
+	
+		<tr>
+		<th valign="top">Aspect :</th> 
+		<td>	
+		
+<select id="aspectname" name="aspectname" onChange='GetaspectFilter();'>
+<option value="">Please select a aspect</option>
+	{% for aspect in aspectslist %}
+			<option value="{{ aspect.filter }}">{{ aspect.name }}</option>	
+	{% endfor %}
+</select>
+	
+		</td>
+</tr>
+<tr>
+<th valign="top">Method:</th> 
+<td>
+	<select id="aspectmethod" name="aspectmethod">
+
+			<option value="PUT">PUT</option>
+			<option value="DELETE">DELETE</option>
+
+</select>
+<input hidden type="text" name="aspectnamenew" id="aspectnamenew"></input>
+</td>
+</tr>
+        <tr>
+		<th valign="top">Value:</th> 
+
+            <td>
+<textarea id="aspectvalue" name="aspectvalue" rows="4" cols="50">
+                   		
+</textarea> 
+
+<script>
+function GetaspectFilter(){
+		var listbox = document.getElementById("aspectname");
+		var selIndex = listbox.selectedIndex;
+		var selValue = listbox.options[selIndex].text;
+		document.getElementById("aspectnamenew").value=selValue;
+		document.getElementById("aspectvalue").value = document.getElementById("aspectname").value;
+}
+</script>
+            </td>
+          
+        </tr> 
+
+        
+
+	
+	<tr>
+		<th>&nbsp;</th>
+		<td valign="top">
+			<input id="createcustbtn" type="button" onclick=Confirmnewcust(); value="" class="form-submit" />
+		
+			<input type="reset" value="" class="form-reset"  />
+		</td>
+		<td></td>
+	</tr>
+	
+	</table></form>
+</div>
+</div>
     
     <div id="ModifyStream" class="tab-pane fade">
       <h3>	&nbsp;	&nbsp; 	New Customer</h3>
@@ -1087,7 +1204,7 @@ function FunctionLower() {
 		<td></td>
 	</tr>
 	
-	</table>
+	</table></form>
 </div>
 <script>
 function randomPassword(length) {

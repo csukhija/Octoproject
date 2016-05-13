@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 from models import customers
-from models import streams
+from models import streams,aspects
 import os
 import sqlite3
 from random import shuffle
@@ -27,7 +27,7 @@ holgerhostname = 'opsqa.octoshape.org'
 holgerusername = 'ispp-readonly'
 holgerpassword = '1234'
 cpcodes = {}
-
+global aspectslist
 # Create your views here.
 
 	
@@ -39,11 +39,13 @@ def index(request):
 			if user.is_active:
 				auth_login(request, user)
 				customerlist=customers.objects.all().order_by('name')
-				Context = {'customerlist' : customerlist}
+				aspectslist=aspects.objects.all().order_by('name')
+				Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 	if request.user.is_authenticated():
 		customerlist=customers.objects.all().order_by('name')
-		Context = {'customerlist' : customerlist}
+		aspectslist=aspects.objects.all().order_by('name')
+		Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
 		return render_to_response('signin.html',Context, context_instance=RequestContext(request))  
 	return render_to_response('index.html',context_instance=RequestContext(request))
 	
@@ -62,8 +64,8 @@ def signin(request):
 		request.user.get_username()
 		global customerlist
 		customerlist=customers.objects.all().order_by('name')
-		
-		Context = {'customerlist' : customerlist}
+		aspectslist=aspects.objects.all().order_by('name')
+		Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
 		return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 		#return render_to_response('signin.html', context_instance=RequestContext(request))  
 	return render_to_response('signout.html',context_instance=RequestContext(request))
@@ -232,12 +234,13 @@ def Holgerstreams(request, tag=None):
 		streamviewname=request.POST.get('Holgerinp',"")
 		streamlist=streams.objects.all().filter(name__contains=request.POST.get('Holgerinp',False))
 		customerlist=customers.objects.all().order_by('name')
+		aspectslist=aspects.objects.all().order_by('name')
 		slist = []
 		for stream in streamlist:
 			name = "{}/".format(stream.name.split('/')[0])
 			stream.cpcode = get_cpcodes(name)
 			slist.append(stream)
-		Context = {'streamlist' : slist,'customerlist' : customerlist,'streamviewname' : streamviewname }
+		Context = {'streamlist' : slist,'aspectslist' : aspectslist,'customerlist' : customerlist,'streamviewname' : streamviewname }
 		return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 	
@@ -336,8 +339,8 @@ def getbroadcastpw(getsignificantpass):
 			if 'live-srcpassword' in responsepwd:
 				if 'password' in responsepwd['live-srcpassword']:
 					bpwd=responsepwd['live-srcpassword']['password']
-					print bpwd
-					return 'set at prefix '+getsignificantpass+'/ is '+bpwd
+					#print bpwd
+					return bpwd
 			print getsignificantpass
 			getsignificantpass=getsignificantpass.rsplit('/', 1)[0]
 
@@ -370,7 +373,8 @@ def NewStream(request):
 					erroredit= "**** Abort. 10 streams per day only . Please try tomorrow or escalate CC_Octo_Queue ****"
 					global customerlist
 					customerlist=customers.objects.all().order_by('name')
-					Context={ 'erroredit' : erroredit ,'customerlist' : customerlist}
+					aspectslist=aspects.objects.all().order_by('name')
+					Context={ 'erroredit' : erroredit ,'customerlist' : customerlist,'aspectslist' : aspectslist}
 					return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 					#return HttpResponse(' Abort. 10 streams per day only . Please try tommorrow <meta http-equiv="refresh" content="3;url=/" />') 
 			request.user.user_quota=request.user.user_quota-1
@@ -388,6 +392,7 @@ def NewStream(request):
 				streamname=streamname[:-1]
 			
 			customerlist=customers.objects.all().order_by('name')
+			aspectslist=aspects.objects.all().order_by('name')
 			Context = {'customerlist' : customerlist}
 			passwd=request.POST.get('streampwdopt', False)
 			#custname=custname+'/'
@@ -437,7 +442,7 @@ def NewStream(request):
 					print x.name
 					if (streamcheck==x.name):
 						streamexisterr=streamcheck+' already exists.'
-						Context= { 'streamexisterr' : streamexisterr,'passoverwriteerr' :passoverwriteerr, 'streamcreation' : streamcreation,'customerlist' : customerlist }
+						Context= { 'streamexisterr' : streamexisterr,'passoverwriteerr' :passoverwriteerr, 'streamcreation' : streamcreation,'customerlist' : customerlist ,'aspectslist' : aspectslist}
 						return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 						#return HttpResponse(streamcheck+" already exists")
 			if passwd:
@@ -529,7 +534,7 @@ def NewStream(request):
 						logger.info("User "+request.user.username+" created stream "+streamnamesnew)
 
 					except urllib2.HTTPError, e:
-						return render(e,'signin.html',  { 'flag1' : 0 ,'customerlist' : customerlist})
+						return render(e,'signin.html',  { 'flag1' : 0 ,'customerlist' : customerlist,'aspectslist' : aspectslist})
 						print e
 				else:
 					requeststr =urllib2.Request(octo_configs.octo_server+'/holger/32900/-/'+streamnamesnew+'?aspect=livebase-pushed&format=json' ,data=dat)
@@ -555,7 +560,7 @@ def NewStream(request):
 					streamcreation.append('****  The ABR PLAYBACK Stream Name is  octoshape://streams.octoshape.net/'+streamname+'/abr')
 					logger.info("User "+request.user.username+" created stream "+streamnamesnew+'/abr')
 					print streamcreation
-					Context= { 'passoverwriteerr' :passoverwriteerr,'flag1' : 1 , 'streamcreation' : streamcreation,'customerlist' : customerlist }
+					Context= { 'passoverwriteerr' :passoverwriteerr,'flag1' : 1 , 'streamcreation' : streamcreation,'customerlist' : customerlist,'aspectslist' : aspectslist }
 					return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 
 				except urllib2.HTTPError, e:
@@ -563,19 +568,42 @@ def NewStream(request):
 					return HttpResponse(e, content_type="text/plain")
 			
 			logger.info("User "+request.user.username+" created streams "+str(streamcreation))
-			Context={ 'passoverwriteerr' :passoverwriteerr,'flag1' : 1 , 'streamcreation' : streamcreation , 'customerlist' : customerlist}
+			Context={ 'passoverwriteerr' :passoverwriteerr,'flag1' : 1 , 'streamcreation' : streamcreation , 'customerlist' : customerlist,'aspectslist' : aspectslist}
 			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 
 		return HttpResponse("You are not allowed to create new streams. Please contact the SA team")
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 
+
+def find_password(streamname, passwords):
+	if streamname in passwords:
+		# if the exact stream name has its own password, return it right away
+		return passwords[streamname]
 	
-def updateDB(streamnametodb, aspect ):
-	valuestrm=streamnametodb
+	password = None
+	sorted_names = sorted(passwords, key=lambda x: len(x), reverse=True)
+	for name in sorted_names:
+		if name.endswith('/') and streamname.startswith(name):
+			# stream names are sorted by length descending. the longest name will be the correct password so return it once it is found
+			return passwords[name]
+	
+def updateDB(streamnametodb, aspect):	
+	client = HolgerClient(holgerhostname, '-', holgerusername, holgerpassword)
 	try:
+		stream_aspects = client.get_aspects(streamnametodb, ['livebase-pushed', 'livebase-best', 'multi-live'])
 		conn = sqlite3.connect(dbfilename)
 		c = conn.cursor()
-		c.execute('INSERT INTO "login_streams" ("name", "aspect") VALUES (?, ?)', (valuestrm,aspect ))
+		password= getbroadcastpw(streamnametodb)
+		for streamname in stream_aspects:
+			values = stream_aspects[streamname] # much complicate
+			bitrate = values['bitrate'] if 'bitrate' in values else None
+			print bitrate
+			streamtype = values['streamtype'] if 'streamtype' in values else None
+			publish = values['publish'] if 'publish' in values else None
+			print password
+			readonly = values['read-only'] if 'read-only' in values else None
+			c.execute('INSERT OR REPLACE INTO "login_streams" ("name", "aspect", "bitrate", "streamtype", "publish" , "password" ,"readonly") VALUES (?, ?, ?, ?, ?,?,?)', (streamnametodb, aspect, bitrate, streamtype, publish,password,readonly))
+
 		conn.commit()
 	
 	except Exception as e:
@@ -588,7 +616,6 @@ def delDB(streamnametodb):
 	print valuestrm
 	try:
 		delinst= streams.objects.all().filter(name=valuestrm)
-		print delinst
 		delinst.delete()
 	except Exception as e:
 		print('Something went wrong: %s' % e)
@@ -642,6 +669,7 @@ def deletestreamconfirm(request):
 		if request.user.is_superuser or request.user.is_staff:
 			global customerlist
 			customerlist=customers.objects.all().order_by('name')
+			aspectslist=aspects.objects.all().order_by('name')
 			delstream=request.POST.get('delstream',False)
 			delstreamasp=request.POST.get('delstreamaspect',False)
 			print delstream
@@ -661,11 +689,11 @@ def deletestreamconfirm(request):
 				delDB(delstream)
 				logger.info("User "+request.user.username+" deleted stream "+delstream)
 				delstream+=' has been deleted successfully'
-				Context = {'deletstream' : delstream,'customerlist' : customerlist }
+				Context = {'deletstream' : delstream,'customerlist' : customerlist,'aspectslist' : aspectslist }
 			except urllib2.HTTPError, e:
 				print e
 				logger.info("User "+request.user.username+" had error deleting stream "+delstream+" "+str(e))
-				Context = {'deletstream' : e,'flag1' : 0 ,'customerlist' : customerlist }
+				Context = {'deletstream' : 'Please contact Octoshape Operations as the item is read-only or part of abr','flag1' : 0 ,'customerlist' : customerlist }
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 		return render_to_response('signout.html',context_instance=RequestContext(request))
@@ -679,7 +707,8 @@ def listtream(request,tag=None):
 		global customerlist
 		streamlist=streams.objects.all().filter(name=tag)
 		customerlist=customers.objects.all().order_by('name')
-	
+		aspectslist=aspects.objects.all().order_by('name')
+
 		slist = []
 		for stream in streamlist:
 			name = "{}/".format(stream.name.split('/')[0])
@@ -744,7 +773,7 @@ def listtream(request,tag=None):
 						streambest=responsenew['livebase-best']['sources']
 			
 		print([p.name for p in streamlistnoabrrecord])
-		Context = {'streambest' : streambest,'streampassword' :streampassword,'streamabrexisting': streamabrexisting,'erroredit'	: erroredit,'streamlistnonabr':streamlistnonabr, 'abr':tag,'slistbest': slistbest,'streamlist' : slist,'streamlistabr': slistabr, 'streamabr': streamabr,'customerlist' : customerlist,'liss' : response, 'streamviewname' : tag, 'streamtype' : streamtype,'actualbr' : actualbr ,'bitrate' :bitrate,'publish' : publish}
+		Context = {'streambest' : streambest,'streampassword' :streampassword,'streamabrexisting': streamabrexisting,'erroredit'	: erroredit,'streamlistnonabr':streamlistnonabr, 'abr':tag,'slistbest': slistbest,'streamlist' : slist,'streamlistabr': slistabr, 'streamabr': streamabr,'aspectslist' : aspectslist,'customerlist' : customerlist,'liss' : response, 'streamviewname' : tag, 'streamtype' : streamtype,'actualbr' : actualbr ,'bitrate' :bitrate,'publish' : publish}
 		return render_to_response('EditStream.html',Context,context_instance=RequestContext(request))
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 		
@@ -780,6 +809,8 @@ def NewCust(request):
 			requestmbr.get_method = lambda: 'PUT'
 			requestmbr.add_header('Content-Type', 'application/json')
 			customerlist=customers.objects.all().order_by('name')
+			aspectslist=aspects.objects.all().order_by('name')
+
 		
 			try:	
 				responsecust = opener.open(requestcust).read()
@@ -787,7 +818,7 @@ def NewCust(request):
 				responsepwd = opener.open(requestpwd).read()
 				updateDBcust(newcust, newcpcode)
 				
-				Context = {'customerlist' : customerlist,'Newcustcreated'	: Newcustcreated}
+				Context = {'customerlist' : customerlist,'Newcustcreated'	: Newcustcreated,'aspectslist' : aspectslist}
 				logger.info("User "+request.user.username+" created new Customer "+str(Newcustcreated))
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 			except urllib2.HTTPError, e:
@@ -828,8 +859,11 @@ def EditStream(request,tag=None):
 				response = opener.open(request1).read()
 				#response2 = opener.open(request2).read()
 				global customerlist
+				updateDB(editstreamname, 'livebase-pushed')
 				customerlist=customers.objects.all().order_by('name')
-				Context = {'customerlist' : customerlist,'streamupdate'	: streamupdate}
+				aspectslist=aspects.objects.all().order_by('name')
+
+				Context = {'customerlist' : customerlist,'streamupdate'	: streamupdate ,'aspectslist' : aspectslist}
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 				#return HttpResponse('Done. STREAM UPDATED RELOADING PAGE<meta http-equiv="refresh" content="3;url=/" />')
 			except urllib2.HTTPError, e:
@@ -897,7 +931,57 @@ def Updateabr(request,tag=None):
 				return render(e,'signin.html',  { 'flag1' : 0 })
 			logger.info("User "+request.user.username+" updated abr stream "+abr)
 			abrupdatestatus=abr+' has been updated '
-			Context = {'customerlist' : customerlist,'abrupdatestatus'	: abrupdatestatus}
+			Context = {'customerlist' : customerlist,'abrupdatestatus'	: abrupdatestatus ,'aspectslist' : aspectslist}
+			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
+			#return HttpResponse('abr has been updated, RELOADING PAGE <meta http-equiv="refresh" content="3;url=/" />')
+		return HttpResponse("Permission Error")
+	return render_to_response('signout.html',context_instance=RequestContext(request))
+
+
+def advconfig(request,tag=None):
+	if request.user.is_authenticated():
+		if request.user.is_superuser or request.user.is_staff:
+			print tag
+			aspectslist=aspects.objects.all().order_by('name')
+			Context = {'tag' : tag , 'aspectslist' : aspectslist}
+			return render_to_response('Advanced.html',Context,context_instance=RequestContext(request))
+		return render_to_response('signout.html',context_instance=RequestContext(request))
+	return render_to_response('signout.html',context_instance=RequestContext(request))
+
+
+
+
+def advconfigpage(request):
+	if request.user.is_authenticated():
+		if request.user.is_superuser or request.user.is_staff:
+			streamname=	request.POST.get('streamidedit', False)
+			streamaspect=request.POST.get('aspectnamenew', False)
+			streamfilter=request.POST.get('aspectvalue', False)
+			streammethod=request.POST.get('aspectmethod', False)
+			customerlist=customers.objects.all().order_by('name')
+			aspectslist=aspects.objects.all().order_by('name')
+			print streamname,streamaspect,streamfilter,streammethod
+			#return HttpResponse("Permission Error")
+			#abr=request.POST.get('valabr', False)
+			auth_handler = HTTPDigestAuthIntAuthHandler()
+			auth_handler.add_password('octowebapi', octo_configs.octo_server, octo_configs.octo_user, octo_configs.octo_pass)
+			opener = urllib2.build_opener(auth_handler)
+			path= octo_configs.octo_server+'/holger/32900/-/'+streamname+'?aspect='+streamaspect+'&format=json'
+			requestadvconfig =urllib2.Request(path ,data=streamfilter)
+			requestadvconfig.get_method = lambda: streammethod
+			requestadvconfig.add_header('Content-Type', 'application/json')
+			
+			try:
+				responseabrupdate = opener.open(requestadvconfig).read()
+				abrupdatestatus=streamname+' has been updated '
+			except urllib2.HTTPError, e:
+				print e
+				delstream=streamname+' failed to update '
+				Context = {'customerlist' : customerlist,'aspectslist' : aspectslist,'deletstream' : delstream}
+				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
+				#return render(e,'signin.html',  { 'flag1' : 0 })
+			logger.info("User "+request.user.username+" updated advconfig stream "+streamname+" with values " +streamaspect,streamfilter,streammethod+".")
+			Context = {'customerlist' : customerlist,'aspectslist' : aspectslist,'abrupdatestatus'	: abrupdatestatus}
 			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 			#return HttpResponse('abr has been updated, RELOADING PAGE <meta http-equiv="refresh" content="3;url=/" />')
 		return HttpResponse("Permission Error")

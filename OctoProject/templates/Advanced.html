@@ -1,0 +1,104 @@
+<form method="post" action="/advconfigpage/">
+   <div class="modal-footer">
+      
+          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+        	      <h3>	&nbsp;	&nbsp; 	Advanced Configuration</h3>
+      <p><div class="section"> 
+ 
+<h4>Advanced Configuration</h4>
+
+		<form name="parametersadd" method="post" action="/advconfig/" >
+	
+		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+
+		<tr>
+		<th valign="top">Stream Name:</th> 
+		<td>	
+		
+		
+	<input type="text" value="{{ tag }}" required  id="streamidedit" name="streamidedit" class="inp-form" />
+	
+		
+		</td>
+</tr>
+
+	
+		<tr>
+		<th valign="top">Aspect :</th> 
+		<td>	
+		
+<select id="aspectname" name="aspectname" onChange='GetaspectFilter();'>
+<option value="">Please select a aspect</option>
+	{% for aspect in aspectslist %}
+			<option value="{{ aspect.filter }}">{{ aspect.name }}</option>	
+	{% endfor %}
+</select>
+	
+		</td>
+</tr>
+<tr>
+<th valign="top">Method:</th> 
+<td>
+	<select id="aspectmethod" name="aspectmethod">
+
+			<option value="PUT">PUT</option>
+			<option value="DELETE">DELETE</option>
+
+</select>
+<input hidden type="text" name="aspectnamenew" id="aspectnamenew"></input>
+</td>
+</tr>
+        <tr>
+		<th valign="top">Value:</th> 
+
+            <td>
+<textarea id="aspectvalue" name="aspectvalue" rows="4" cols="50">
+                   		
+</textarea> 
+
+<script>
+function GetaspectFilter(){
+		var listbox = document.getElementById("aspectname");
+		var selIndex = listbox.selectedIndex;
+		var selValue = listbox.options[selIndex].text;
+		document.getElementById("aspectnamenew").value=selValue;
+		document.getElementById("aspectvalue").value = document.getElementById("aspectname").value;
+}
+</script>
+            </td>
+          
+        </tr> 
+
+        
+
+	
+	<tr>
+		<th>&nbsp;</th>
+		<td valign="top">
+			<input id="createcustbtn" type="button" onclick=Confirmnewcust(); value="" class="form-submit" />
+		
+			<input type="reset" value="" class="form-reset"  />
+		</td>
+		<td></td>
+	</tr>
+	
+	</table></form>
+</div>
+</form>
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x;
+    if (confirm("Are you sure !") == true) {
+        x = "You pressed OK!";
+        
+    } else {
+    	return false;
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+
