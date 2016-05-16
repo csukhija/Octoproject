@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^Editabr/(?P<tag>.+)','login.views.Editabr' ),
     url(r'^Updateabr/$','login.views.Updateabr' ),
     url(r'^advconfig/(?P<tag>.+)$','login.views.advconfig' ),
+    url(r'^advconfigpage/','login.views.advconfigpage' ),
     #url(r'^(?P<slug>[-\w]+)/$', login.views.search.as_view(), name='article-detail'),
     
     url(

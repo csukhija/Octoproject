@@ -1,19 +1,8 @@
-[12/May/2016 11:11:34] INFO [login.views:813] User csukhija@akamai.com created new Customer [u'New Customer name chirag/', u'New password octo', 'CPcode 123']
-[12/May/2016 11:11:59] INFO [login.views:813] User csukhija@akamai.com created new Customer [u'New Customer name chirag/', u'New password octo', 'CPcode 132']
-[13/May/2016 09:49:36] INFO [login.views:704] User csukhija@akamai.com searched for keithcdn/live/ch-keith/1200k/b
-[13/May/2016 09:49:37] INFO [login.views:704] User csukhija@akamai.com searched for keithcdn/live/ch-keith/1200k/b
-[13/May/2016 09:49:39] INFO [login.views:704] User csukhija@akamai.com searched for keithcdn/live/ch-keith/1200k/b
-[13/May/2016 09:57:59] INFO [login.views:704] User csukhija@akamai.com searched for atest/live/cb/120k
-[13/May/2016 09:58:01] INFO [login.views:704] User csukhija@akamai.com searched for atest/live/cb/120k
-[13/May/2016 09:58:02] INFO [login.views:704] User csukhija@akamai.com searched for atest/live/cb/120k
-[13/May/2016 09:58:09] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 09:58:11] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 09:58:12] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 10:00:23] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 10:00:24] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 10:00:26] INFO [login.views:704] User csukhija@akamai.com searched for chirag/live/testdb3/abr
-[13/May/2016 10:01:31] INFO [login.views:704] User csukhija@akamai.com searched for chirag/ch1/5000k
-[13/May/2016 10:01:32] INFO [login.views:704] User csukhija@akamai.com searched for chirag/ch1/5000k
-[13/May/2016 10:01:33] INFO [login.views:704] User csukhija@akamai.com searched for chirag/ch1/5000k
-[13/May/2016 10:01:40] INFO [login.views:704] User csukhija@akamai.com searched for chirag/ch1/5000k
-[13/May/2016 10:01:41] INFO [login.views:704] User csukhija@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:22:15] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:22:16] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:25:12] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:25:13] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:25:15] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:30:56] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:30:57] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k
+[16/May/2016 10:41:01] INFO [login.views:704] User QAOctoAdmin@akamai.com searched for chirag/ch1/5000k

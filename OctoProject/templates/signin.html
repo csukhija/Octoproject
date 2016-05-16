@@ -23,11 +23,15 @@
 
 
 
+
 <script type="text/javascript">
 $(document).ready(function() {
   $('#navigation').localScroll({duration:400});
 });
 </script>
+
+
+
 <!--  jquery core -->
 
 <!--  checkbox styling script -->
@@ -288,7 +292,6 @@ $(document).pngFix( );
     <li ><a data-toggle="tab" href="#CreateStream">Create Stream</a></li>
      {% endif  %}
      {% if user.is_superuser  %}
-     <li><a data-toggle="tab" href="#EditStream">Advanced Configuration</a></li>
      
     <li><a data-toggle="tab" href="#ModifyStream">New Customer</a></li>
     {% endif  %}
@@ -413,11 +416,11 @@ $(document).pngFix( );
       <td>
      
       
-      <input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input></td>
-  <a  data-toggle="tooltip" data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
+      <input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
+<a data-toggle="tooltip" title="Hooray!" data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
 
 
-
+</td>
 
    <div id="outputbox1"> 
    
@@ -487,31 +490,46 @@ $(document).pngFix( );
 					<td>
 				
 	<div class="dropdown" >
-  <a 	{% if stream.readonly %}  disabled="true" {% endif %}	type="button"  class="glyphicon glyphicon-cog btn btn-default btn-sm"  data-toggle="dropdown">
-  <span class="caret"></span></a>
+  <a 	{% if stream.readonly %}  disabled="true" {% endif %}	type="button" style="color:maroon" class="glyphicon glyphicon-cog btn btn-default btn-sm"  data-toggle="dropdown">
+  <span  class="caret"></span></a>
   
-  {% if not stream.readonly %}
+  
   <ul class="dropdown-menu">
-      <li><a  onclick="alert('Edit {{ stream.name }} ?');" data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
-<i class="glyphicon glyphicon-pencil"></i> &nbsp; Edit Stream<i class="icon-pencil"></i></a></li> 
+      <li ><a  data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
+<i style="color:black" class="glyphicon glyphicon-pencil"></i> &nbsp; Edit Stream<i class="icon-pencil"></i></a></li> 
 
 
 
  <li><a  data-toggle="modal" data-target="#myModal" href="/advconfig/{{stream.name}}" name="{{ stream.name }}" title="AdvConfig">
-<i class="glyphicon glyphicon-qrcode"></i> &nbsp; Advanced Configuration</a></li>
+<i style="color:black" class="glyphicon glyphicon-qrcode"></i> &nbsp; Advanced Configuration</a></li>
 
 
-<li class="divider"></li> 
+ <li><a  data-toggle="modal" data-target="#myModal" href="/advconfig/{{stream.name}}" name="{{ stream.name }}" title="AdvConfig">
+<i style="color:red	" class="glyphicon glyphicon-ban-circle"></i> &nbsp; Disable (Block) Stream</a></li>
+
+
+
+<li><a onclick="geturl('{{ stream.name }}')" data-toggle="modal" value="{{ stream.name }}" data-id="{{ stream.name }}" data-target="#myModalplayer" href="" name="{{ stream.name }}" title="AdvConfig">
+<i style="color:blue"  class="glyphicon glyphicon-triangle-right blue"></i> &nbsp; Debug Player</a></li>
+
+
+<li class="divider"></li>
+
     <li><a  data-toggle="modal" data-target="#myModal" href="/delstream/{{stream.name}}/{{ stream.aspect }}" name="{{ stream.name }}" title="Delete">
-<i class="glyphicon glyphicon-trash"></i> &nbsp; Delete Stream</a></li>
+<i style="color:red" class="glyphicon glyphicon-trash"></i> &nbsp; Delete Stream</a></li>
 
 
 
   </ul>
-   {% endif %} 
+    
 </div>
-			
-					
+		<script>
+		function geturl(c){
+		var x = 'octoshape://opsqa.octoshape.org/'+c;
+		document.getElementById("urlstream").contentWindow.document.location.href='http://demo.octoshape.com/arplayer3/?link='+x;
+		}
+		</script>	
+		
 		</td>
 					            {% endif %} 
 					
@@ -546,29 +564,7 @@ $(document).pngFix( );
 				</table>
 	
    </form> 
-<!--     {% if streamlist %} -->
-<!--  <div id="player"></div> -->
-<!--  {% endif %}  -->
-<script type="text/javascript">
-		var x = 'octoshape://opsqa.octoshape.org/'+document.getElementById("Holgerinp").value;
-        var player_id = "player";
-        var player_width = 412;
-        var player_height = 288;
 
-        var player_streams = [
-        	{
-        		id: 'my_stream',
-				stream: x
-        	}
-        ];
-
-        //optional. starts the stream when the player is ready
-        var player_stream = "my_stream";
-        var params = {allowFullScreen: true, scale: 'noscale', allowScriptAccess: 'always'};
-        var attributes = {id: player_id, name: player_id};
-	    swfobject.embedSWF('http://octoshape-a.akamaihd.net/eps/players/infinitehd4/player.swf', player_id, player_width, player_height, "10.2.0", null, null, params, attributes);
-	
-</script>
    
  	 {% if bitrate %} 
  <form  method="post" action="/EditStream/">
@@ -731,7 +727,7 @@ $(document).pngFix( );
    
     
     
-<div id="myModal" class="modal" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+<div id="myModal" class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -755,6 +751,71 @@ $(document).pngFix( );
     </div>
 </div>
   </div>
+
+  
+ <div id="myModalplayer"  class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-footer">
+      
+          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+      <div class="modal-header">
+      
+        <h4 class="modal-title">Debug Player</h4>
+      </div>
+      <div class="modal-body">
+      
+      
+      <iframe id="urlstream" width="537" height="600"></iframe>
+      
+      
+      </div>
+<!--             {% if streamlist %} -->
+<!--  <center><div id="player"></div>  -->
+<!--  {% endif %} -->
+ <br/>
+ 
+ 	
+
+ <script type="text/javascript">
+		var x = 'octoshape://opsqa.octoshape.org/'+document.getElementById('Holgerinp').value;
+		
+		document.getElementById('streamurl').value=x;
+		
+        var player_id = "player";
+        var player_width = 412;
+        var player_height = 288;
+
+        var player_streams = [
+        	{
+        		id: 'my_stream',
+				stream: x
+        	}
+        ];
+
+        //optional. starts the stream when the player is ready
+        var player_stream = "my_stream";
+        var params = {allowFullScreen: true, scale: 'noscale', allowScriptAccess: 'always'};
+        var attributes = {id: player_id, name: player_id};
+	    swfobject.embedSWF('http://octoshape-a.akamaihd.net/eps/players/infinitehd4/player.swf', player_id, player_width, player_height, "10.2.0", null, null, params, attributes);
+	
+</script>
+      <div class="modal-footer">
+        <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+  </div> 
+  
+  
+  
+ 
+
+
+
 
     <div id="CreateStream" class="tab-pane fade">
       <h3>	&nbsp;	&nbsp; 	Create Stream</h3>
@@ -966,7 +1027,6 @@ $(document).ready(function(){
 });
 </script>
 
-	
 	<tr>
 			<th valign="top"> </th>
 			<td>
@@ -1264,7 +1324,6 @@ function Confirmnewcust() {
     </div>
   </div>
 </div>
-
 
 
   
