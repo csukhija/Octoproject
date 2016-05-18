@@ -140,6 +140,7 @@ $(document).pngFix( );
 <div class="clear"></div>
 {% if user.is_superuser %}	
 <form id="topsearch" target="_blank" method="post" action="/search/">
+{% csrf_token %}
 		<table  border="0" cellpadding="0" cellspacing="0">
 		<tr>
 		<td><input height="1" type="text" name="searchstring" value="jonasl/live/std/*"  onblur="if (this.value=='') { this.value='jonasl/live/std/*'; }" onfocus="if (this.value=='jonasl/live/std/*') { this.value=''; }" class="top-search-inp" /></td>
@@ -325,7 +326,7 @@ $(document).pngFix( );
   <strong>{{ deletstream }}</strong> <p></p>
 </div>
  {% endif  %}
- 
+
      {% if abrupdatestatus %} 
   <div class="alert alert-success fade in">
    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -412,24 +413,18 @@ $(document).pngFix( );
   </div>
 {% endif  %}		
       <div id="searchfield">
-      <form method="post" onsubmit=searchtext(); action="/Holger/">
+      <form method="post" action="/Holger/">
+      {% csrf_token %}
       <td>
      
       
-      <input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
-<a data-toggle="tooltip" title="Hooray!" data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
-
+<input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
+<a data-toggle="tooltip"  data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
 
 </td>
-
+   
    <div id="outputbox1"> 
-   
-   
-   <script>
-   function searchtext()
-   {
-			document.getElementById("searchresult").innerHTML ="Searching for Results "}
-	</script>
+
  
   <p id="searchresult"  >Type Customer name or prefix and press Enter  </p> 
 	
@@ -441,6 +436,7 @@ $(document).pngFix( );
 		 {% if streamlist %}
 				<!--  start product-table .....................................................................................-->
 			<form id="mainform" action="">
+			{% csrf_token %}
 				<div class="table-responsive">
 				<table id="product" class="display table table-bordered table table-striped" border="2" width="100%" cellpadding="0" cellspacing="0" >
 				 <thead>  
@@ -508,8 +504,7 @@ $(document).pngFix( );
 <i style="color:red	" class="glyphicon glyphicon-ban-circle"></i> &nbsp; Disable (Block) Stream</a></li>
 
 
-
-<li><a onclick="geturl('{{ stream.name }}')" data-toggle="modal" value="{{ stream.name }}" data-id="{{ stream.name }}" data-target="#myModalplayer" href="" name="{{ stream.name }}" title="AdvConfig">
+<li><a onclick="geturl('{{  stream.name  }}')" data-toggle="modal" value="{{ stream.name }}" data-id="{{ stream.name }}" data-target="#myModalplayer" href="" name="{{ stream.name }}" title="AdvConfig">
 <i style="color:blue"  class="glyphicon glyphicon-triangle-right blue"></i> &nbsp; Debug Player</a></li>
 
 
@@ -525,13 +520,15 @@ $(document).pngFix( );
 </div>
 		<script>
 		function geturl(c){
-		var x = 'octoshape://opsqa.octoshape.org/'+c;
-		document.getElementById("urlstream").contentWindow.document.location.href='http://demo.octoshape.com/arplayer3/?link='+x;
+		var x = document.getElementById("playcontext").value+c;
+		document.getElementById("playlink").value=c;
+		url='http://demo.octoshape.com/arplayer3/?link='+x
+		document.getElementById("urlstream").src=url
 		}
 		</script>	
 		
 		</td>
-					            {% endif %} 
+{% endif %} 
 					
 				</tr>
 
@@ -564,10 +561,11 @@ $(document).pngFix( );
 				</table>
 	
    </form> 
-
+</form> 
    
  	 {% if bitrate %} 
  <form  method="post" action="/EditStream/">
+ {% csrf_token %}
 	  <table class="table">
 	<tr>
 	<th >Stream Name</th>  
@@ -767,8 +765,21 @@ $(document).pngFix( );
         <h4 class="modal-title">Debug Player</h4>
       </div>
       <div class="modal-body">
+    Context   :<input id="playcontext" name="playcontext" size="30" value="{{ streamcontext }}"></input><br/>
+     Playback Link   :<input id="playlink" name="playlink" onfocusout="geturl(this.value)"> </input><br/>
+    Authorization Password   :  <input id="authpsw" name="authpsw" onfocusout="getauth()">  </input><br/><br/>
+     
       
-      
+      <script>
+		function getauth(){
+		var c=document.getElementById("playlink").value;
+		var authpsw=document.getElementById("authpsw").value;	
+		url='http://demo.octoshape.com/arplayer3/?link='+document.getElementById("playcontext").value+c+'&psw='+authpsw
+		document.getElementById("urlstream").src=url
+
+		}
+		</script>	
+     
       <iframe id="urlstream" width="537" height="600"></iframe>
       
       
@@ -828,7 +839,7 @@ $(document).pngFix( );
 	
 		</div> 
 		<form name="addstream" method="post" action="/NewStream/" >
-
+		{% csrf_token %}
 
 
 	
@@ -1112,7 +1123,7 @@ alert('Stream has been added sucessfully.');
 <h4>Advanced Configuration</h4>
 
 		<form name="parametersadd" method="post" action="/advconfig/" >
-	
+	{% csrf_token %}
 		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 
 		<tr>
@@ -1198,7 +1209,7 @@ function GetaspectFilter(){
 
 
 		<form name="addcust" method="post" action="/NewCust/" >
-	
+	{% csrf_token %}
 		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 
 		<tr>
@@ -1389,8 +1400,35 @@ function Confirm() {
 </tr>
 </table>
 
-    
-			  
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+
+<script type="text/javascript">
+	function getme()
+	{
+                    $.ajax({
+                        url : "/ajax/", 
+                        type : "POST",
+                        data : {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            forminput1 : $('#forminput1').val()
+                            },
+                        success : function(json) {
+                            $('#result').html(json.message);
+                        },
+                    
+                    });
+        
+	};
+</script>
+<form method="post" name="example" >
+        {% csrf_token %}
+        <input hidden name="example" id="forminput1" name="forminput1" type="text">
+        <input hidden id="butt" type="button" onclick="getme();" value="click me"></input>
+</form>
+
+   
+<div id="result">
+</div>			
    
 
 <div class="clear">&nbsp;</div>

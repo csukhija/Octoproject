@@ -242,7 +242,7 @@ $(document).pngFix( );
 <div id="top-search">	
 <form target="_blank" method="post" action="/search/">
 		
-	
+		  {% csrf_token %}
 		<td><input type="text" name="searchstring" value="jonasl/live/std/*"  onblur="if (this.value=='') { this.value='jonasl/live/std/*'; }" onfocus="if (this.value=='jonasl/live/std/*') { this.value=''; }" class="top-search-inp" /></td>
 		<td>
 		 
@@ -397,7 +397,7 @@ $(document).pngFix( );
    </div>
 
    <form onsubmit="doParse(); return false;">
-    
+    {% csrf_token %}
      
       <div id="inputcontainer"><textarea id="text" rows="12">{{ json_response|safe }}</textarea>
      </div>

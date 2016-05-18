@@ -35,6 +35,6 @@ class customers(models.Model):
     
 class aspects(models.Model):
     name = models.CharField(max_length=100,primary_key=True)
-    filter=models.CharField(max_length=100)
+    filter=models.CharField(max_length=2000)
     def __unicode__(self):
         return self.name

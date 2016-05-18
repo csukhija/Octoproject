@@ -36,6 +36,7 @@
 {% if streamlistnonabr %}
 
 <form id="updateabr" method="post" action="/Updateabr/">
+{% csrf_token %}
 {% if user.is_superuser or user.is_staff %}				
 <h3>New abr for  {{ abr }}</h3>
 
@@ -88,6 +89,7 @@
    
  	 {% if bitrate %} 
  <form  method="post" action="/EditStream/">
+ {% csrf_token %}
 	  <table class="table">
 	  <h4 class="modal-title">Stream Edit Page</h4>
 	  </br>

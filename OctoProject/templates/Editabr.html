@@ -13,7 +13,8 @@
 
 			<!--  start product-table ..................................................................................... -->
 <form id="updateabr" method="post" action="/Updateabr/">
-			
+
+{% csrf_token %}			
 <h2>abr update for {{ abr }}</h2>
 
 
@@ -48,6 +49,7 @@
    
  	 {% if bitrate %} 
  <form  method="post" action="/EditStream/">
+ {% csrf_token %}
 	  <table class="table">
 	<tr>
 	<th >Stream Name</th>  
