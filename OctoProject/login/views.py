@@ -43,12 +43,17 @@ def index(request):
 	if user is not None:
 			if user.is_active:
 				auth_login(request, user)
-				print request.POST
+				x=request.POST.get('login-check', None)
+				if request.POST.get('login-check', None):
+					request.session.set_expiry(3600*24*30*6)
 				customerlist=customers.objects.all().order_by('name')
 				aspectslist=aspects.objects.all().order_by('name')
 				Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 	if request.user.is_authenticated():
+		if request.POST.get('login-check', None):
+			request.session.set_expiry(3600*24*30)
+			print request.POST.get('login-check', None)
 		customerlist=customers.objects.all().order_by('name')
 		aspectslist=aspects.objects.all().order_by('name')
 		Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
@@ -79,28 +84,6 @@ def signin(request):
 def signout(request):
 	logout(request)
 	return render_to_response('signout.html', context_instance=RequestContext(request))  
-
-def table(request):
-	if request.user.is_authenticated():
-		return render_to_response('table.html')
-	return render_to_response('signout.html',context_instance=RequestContext(request))
-
-
-def test(request):
-	if request.user.is_authenticated():
-		return render_to_response('test.html')
-	return render_to_response('signout.html',context_instance=RequestContext(request))
-
-def test2(request):
-	if request.user.is_authenticated():
-		return render_to_response('test2.html')
-	return render_to_response('signout.html',context_instance=RequestContext(request))
-
-def tabletest(request):
-	##print request.user
-	if request.user.is_authenticated():
-		return render_to_response('tabletest.html')
-	return render_to_response('signout.html',context_instance=RequestContext(request))
 
 class HolgerClient:
 	def __init__(self, dirserver, namespace, username, password):
@@ -324,7 +307,7 @@ def search(request, tag=None):
 		request1.get_method = lambda: 'GET'
 		request1.add_header('Content-Type', 'application/json')
 		response = opener.open(request1).read()
-		return render(response, 'tabletest.html', context_instance=RequestContext( request, { 'json_response' : response }))
+		return render(response, 'admintable.html', context_instance=RequestContext( request, { 'json_response' : response }))
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 
 
@@ -941,6 +924,7 @@ def Updateabr(request,tag=None):
 				return render(e,'signin.html',  { 'flag1' : 0 })
 			logger.info("User "+request.user.username+" updated abr stream "+abr)
 			abrupdatestatus=abr+' has been updated '
+			aspectslist=aspects.objects.all().order_by('name')
 			Context = {'customerlist' : customerlist,'abrupdatestatus'	: abrupdatestatus ,'aspectslist' : aspectslist}
 			return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 			#return HttpResponse('abr has been updated, RELOADING PAGE <meta http-equiv="refresh" content="3;url=/" />')

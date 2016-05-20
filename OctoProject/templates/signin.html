@@ -1,119 +1,285 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-
+<link rel="shortcut icon" href="{{ STATIC_URL }}/static/images/shared/akamai.png" type="image/x-icon" />
 
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title></title>
-
   <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/jquery.min-1.12.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/ISPP.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/bootstrap.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href=" {{ STATIC_URL }}/static/css/screen.css" type="text/css" media="screen" title="default" />
-<!--[if IE]>
-<link rel="stylesheet" media="all" type="text/css" href="css/pro_dropline_ie.css" />
-<![endif]-->
+<link rel="stylesheet" href=" {{ STATIC_URL }}/static/css/bootstrap.min.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script> 
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.localScroll.js" type="text/javascript"></script> 
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.scrollTo.js" type="text/javascript"></script> 
-
-
-
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#navigation').localScroll({duration:400});
-});
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js">				
 </script>
-
-
-
-<!--  jquery core -->
-
-<!--  checkbox styling script -->
-<script src="{{ STATIC_URL }}/static/js/jquery/ui.core.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}/static/js/jquery/ui.checkbox.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.bind.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-$(function(){
-	$('input').checkBox();
-	$('#toggle-all').click(function(){
- 	$('#toggle-all').toggleClass('toggle-checked');
-	$('#mainform input[type=checkbox]').checkBox('toggle');
-	return false;
-	});
-});
-</script>  
-
-<![if !IE 7]>
-
-<!--  styled select box script version 1 -->
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.styledselect').selectbox({ inputClass: "selectbox_styled" });
-});
-</script>
- 
-
-<![endif]>
-
-
-<!--  styled select box script version 2 --> 
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5_style_2.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.styledselect_form_1').selectbox({ inputClass: "styledselect_form_1" });
-	$('.styledselect_form_2').selectbox({ inputClass: "styledselect_form_2" });
-});
-</script>
-
-<!--  styled select box script version 3 --> 
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.selectbox-0.5_style_2.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.styledselect_pages').selectbox({ inputClass: "styledselect_pages" });
-});
-</script>
-
-<script src="{{ STATIC_URL }}/static/js/jquery/custom_jquery.js" type="text/javascript"></script>
- 
-<!-- Tooltips -->
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.tooltip.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.dimensions.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function() {
-	$('a.info-tooltip ').tooltip({
-		track: true,
-		delay: 0,
-		fixPNG: true, 
-		showURL: false,
-		showBody: " - ",
-		top: -35,
-		left: 5
-	});
-});
-</script> 
-
-
-<script src="{{ STATIC_URL }}/static/js/jquery/jquery.pngFix.pack.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-$(document).pngFix( );
-});
-</script>
-<link rel="stylesheet" href=" {{ STATIC_URL }}/static/css/screen.css" type="text/css" media="screen" title="default" />
 
 </head>
 <body> 
+<!--  start - script .....................-->
+<script>
+function geturl(c){
+	var x = document.getElementById("playcontext").value+c;
+	document.getElementById("playlink").value=c;
+	url='http://demo.octoshape.com/arplayer3/?link='+x
+	document.getElementById("urlstream").src=url
+	}
+function getauth(){
+	var c=document.getElementById("playlink").value;
+	var authpsw=document.getElementById("authpsw").value;	
+	url='http://demo.octoshape.com/arplayer3/?link='+document.getElementById("playcontext").value+c+'&psw='+authpsw
+	document.getElementById("urlstream").src=url
+
+	}
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#product').DataTable();
+} );
+</script>
+	<script>
+	{% if not user.is_superuser %}
+	document.getElementById("editstreamtype").disabled=true
+	document.getElementById("editpublish").disabled=true
+	document.getElementById("editmaxbr").disabled=true
+	document.getElementById("editinview").disabled=true
+	{% endif %}
+	</script>
+
+<script>
+function editstream(x)
+{		    if ( confirm('You are about to edit the stream'+x+')== true'){} 
+		    else 		    
+		    {document.getElementById("searchresult").innerHTML ="Action Canceled. Try Again";  }}
+</script>
+<script>
+function searchbtn()
+{	
+	document.getElementById("searchbtn").innerHTML ="Searching .. ";  
+	document.getElementById("loader1").hidden=false
+
+}
+</script>
+ <script type="text/javascript">
+		var x = 'octoshape://opsqa.octoshape.org/'+document.getElementById('Holgerinp').value;
+		
+		document.getElementById('streamurl').value=x;
+		
+        var player_id = "player";
+        var player_width = 412;
+        var player_height = 288;
+
+        var player_streams = [
+        	{
+        		id: 'my_stream',
+				stream: x
+        	}
+        ];
+
+        //optional. starts the stream when the player is ready
+        var player_stream = "my_stream";
+        var params = {allowFullScreen: true, scale: 'noscale', allowScriptAccess: 'always'};
+        var attributes = {id: player_id, name: player_id};
+	    swfobject.embedSWF('http://octoshape-a.akamaihd.net/eps/players/infinitehd4/player.swf', player_id, player_width, player_height, "10.2.0", null, null, params, attributes);
+	
+</script>
 
 
 
+
+		<script>
+		document.getElementById('realtxt').onkeyup = searchSel;
+		function searchSel() 
+		    {
+		      var input = document.getElementById('realtxt').value.toLowerCase();
+		       
+		          len = input.length;
+		          output = document.getElementById('custname').options;
+		      for(var i=0; i<output.length; i++)
+		          if (output[i].text.toLowerCase().indexOf(input) != -1 ){
+		          output[i].selected = true;
+		              break;
+		          }
+		      if (input == '')
+		        output[0].selected = true;
+		    }
+		</script>	
+		
+		<script>
+function FunctionValidateBitrate() 
+{
+    var inp = document.getElementById("maxbr");
+    if (inp.value){
+
+    if(!/^[0-9]+(,[0-9]+)*$/.test(inp.value))
+    {        alert('Invalid value detected in Max Bitrate in k:');
+        return false;  }   
+    br= inp.value.split(",")   
+        {% if not user.is_superuser %}
+    	if (br.length>8)
+    	{			alert('Upto 8 Bitrates allowed, you entered '+br.length+' bitrates.');
+			return false;
+    	}    
+    	{% endif %}
+    for (i in br)
+    {
+    	{% if not user.is_superuser %}
+			if (br[i]>5000)
+			{
+				alert('Bitrate cant be greater than 5000, you entered '+br[i]);
+				return false;
+			}
+		{% endif %}
+		if (br[i]<64)
+				{
+				alert('Bitrate cant be less than 64, you entered '+br[i]);
+				return false;
+				}          
+    }
+    }   
+    return true;
+}
+</script>
+
+
+		<script>
+		function SubmitValidate() 
+		{
+			if ( FunctionValidateBitrate())				
+				{
+
+				{% if user.quota > 9 %}				 
+				 document.getElementById("createstreambtn").disabled=true		  
+				 {% endif  %}
+				Confirm();
+			
+				}	    
+		}
+		</script>
+		
+		
+		
+<script>	
+if({{ flag1|safe }}!=1)
+	alert(' Error occured. Please Check values !');
+else
+alert('Stream has been added sucessfully.');
+</script>
+
+
+
+
+
+<script>
+function GetaspectFilter(){
+		var listbox = document.getElementById("aspectname");
+		var selIndex = listbox.selectedIndex;
+		var selValue = listbox.options[selIndex].text;
+		document.getElementById("aspectnamenew").value=selValue;
+		document.getElementById("aspectvalue").value = document.getElementById("aspectname").value;
+}
+</script>
+<script>
+function FunctionLower() {
+    var x = document.getElementById("newcustname");
+    x.value = x.value.toLowerCase();
+}
+</script>
+
+
+
+
+<script>
+function randomPassword(length) {
+    var chars = "abcdefghkmnpqrstuvwxyzABCDEFGHJKMNP2345678";
+    var pass = "";
+    for (var x = 0; x < length; x++) {
+        var i = Math.floor(Math.random() * chars.length);
+        pass += chars.charAt(i);
+    }
+    return pass;
+}
+
+function generate() {
+    addcust.row_password.value = randomPassword(addcust.length.value);
+}
+function generateopt() {
+    addstream.streampwdopt.value = randomPassword(addcust.length.value);
+}
+</script>
+
+<script>
+function Confirmnewcust() {
+    var x;   
+    if ( confirm("Are you sure  ?")== true) {
+    	document.getElementById("createcustbtn").type ="Submit";
+        x = "You pressed OK ! ";       
+    } 
+    else 
+    
+    {
+    	document.getElementById("createstreambtn").type ="Cancel";   	
+        x = "You pressed Cancel!";     
+    }
+    document.getElementById("statuscust").innerHTML = x;
+}
+</script>
+
+
+
+
+<script>
+function Confirm() {
+    var x;
+    
+    if ( confirm("Are you sure !")== true) {
+    	document.getElementById("createstreambtn").type ="Submit";
+        x = "You pressed OK ! Creating new stream.. ";
+        
+    } 
+    else 
+    
+    {
+    	document.getElementById("createstreambtn").type ="Cancel";
+    	
+        x = "You pressed Cancel!";
+        
+    }
+    document.getElementById("status").innerHTML = x;
+}
+</script>	
+
+
+
+
+
+<script type="text/javascript">
+	function getme()
+	{
+                    $.ajax({
+                        url : "/ajax/", 
+                        type : "POST",
+                        data : {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            forminput1 : $('#forminput1').val()
+                            },
+                        success : function(json) {
+                            $('#result').html(json.message);
+                        },
+                    
+                    });
+        
+	};
+</script>
+<!--  stop - script .....................-->
 
 
 <!-- Start: page-top-outer -->
@@ -136,7 +302,7 @@ $(document).pngFix( );
    		<font size="1" color="white">	 Credits &nbsp;{{ user.user_quota }}&nbsp;</font>
 			{% endif %}	 
 </div>
-		<div id="top-search">
+<div id="top-search">
 <div class="clear"></div>
 {% if user.is_superuser %}	
 <form id="topsearch" target="_blank" method="post" action="/search/">
@@ -183,15 +349,8 @@ $(document).pngFix( );
 
 		<!-- start nav-right -->
 		<div id="nav-right">
-		
-			
-			
-			
-	<!-- 		<div class="showhide-account"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_myaccount.gif" width="93" height="14" alt="" /></div>-->
+
 			<div class="clear">&nbsp;</div>
-
-
-
 
 			<a href="/signout" id="logout"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_logout.gif" width="64" height="14" alt="" /></a>
 			<div class="clear"></div>
@@ -227,13 +386,7 @@ $(document).pngFix( );
 		
 		
 		<div class="nav-divider">&nbsp;</div>
-<!-- 		<div class="dropdown"> -->
-<!--   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">CONFIGURE -->
-<!--   <span class="caret"></span></button> -->
-<!--   <ul class="dropdown-menu"> -->
-<!--     <li><a href="#">Infinite Services Live</a></li> -->
 
-<!--   </ul> -->
 </div>
 
 		
@@ -241,7 +394,6 @@ $(document).pngFix( );
 		</li>
 		</ul>
 	
-		<div class="nav-divider">&nbsp;</div>
 	
 		<div class="clear"></div>
 		</div>
@@ -251,40 +403,11 @@ $(document).pngFix( );
 
 </div>
 <div class="clear"></div>
-<!--  start nav-outer -->
-</div>
 
-<!--  start nav-outer-repeat................................................... END -->
-
-
-<!-- start content-outer ........................................................................................................................START -->
-
-<!-- start content -->
 <div id="content">
 
-	<!--  start page-heading -->
-
-
-
-
-
-	<div class="container">
-
-</script>
-
-<link rel="stylesheet" href="{{ STATIC_URL }}/static/css/bootstrap.min.css">
-  <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/jquery.min-1.12.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/bootstrap.min.js"></script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-<code><br/></code>
 <div class="container">
-  
 
-	
-  
   <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#StreamSearch">Stream Search</a></li>
    {% if user.is_superuser or user.is_staff %}
@@ -298,15 +421,11 @@ $(document).pngFix( );
     {% endif  %}
   </ul>
 
-  <div class="tab-content">
-  
+<div class="tab-content">
 
-      
       <div id="StreamSearch" class="tab-pane fade in active">
 
       <h3>	&nbsp;	&nbsp; Stream Search</h3>
-    
-  
    {% if streamexisterr %} 
   <div class="alert alert-danger fade in">
    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -409,38 +528,41 @@ $(document).pngFix( );
      {% endfor  %}
 
 </table>
-    
+
   </div>
 {% endif  %}		
-      <div id="searchfield">
-      <form method="post" action="/Holger/">
+<div id="searchfield">
+      <form onsubmit="searchbtn()" method="post" action="/Holger/">
       {% csrf_token %}
       <td>
-     
       
 <input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
 <a data-toggle="tooltip"  data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
 
 </td>
-   
+ <p id="searchbtn"  > Type Customer name or prefix and press Enter   </p>
+ <div hidden id="loader1"  class="loader"></div>
+	
+</form>
+
    <div id="outputbox1"> 
 
+
  
-  <p id="searchresult"  >Type Customer name or prefix and press Enter  </p> 
 	
         
-        <table id="myTable" class="display table" border="1" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+  <table id="myTable" class="display table" border="1" width="100%" cellpadding="0" cellspacing="0" id="content-table">
 
 	
 
 		 {% if streamlist %}
-				<!--  start product-table .....................................................................................-->
-			<form id="mainform" action="">
-			{% csrf_token %}
-				<div class="table-responsive">
+<!--  start -table .....................-->
+<form id="mainform" action="">
+{% csrf_token %}
+<div class="table-responsive">
 				<table id="product" class="display table table-bordered table table-striped" border="2" width="100%" cellpadding="0" cellspacing="0" >
 				 <thead>  
-          <tr>  
+          				<tr>  
             <th>Stream Name</th>  
             <th>Aspect</th>  
             <th>CPcode</th> 
@@ -470,18 +592,7 @@ $(document).pngFix( );
 					<td> {% if stream.publish == 1 %}True{% endif %}{% if stream.publish == 0 %}False{% endif %}</td>
 					<td>{% if stream.password != None %}{{ stream.password }}{% endif %}</td>
 				            {% if user.is_superuser or user.is_staff %} 
-					
 
-
-<!-- <td size="90" class="options-width"> -->
-
-<!-- <a onclick="alert('Edit {{ stream.name }} ?');" data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" class="icon-1 info-tooltip"></a>			 -->
-<!-- </td> -->
-<!-- <td size="90" class="options-width"> -->
-<!-- <a   data-toggle="modal" data-target="#myModal" href="/delstream/{{stream.name}}/{{ stream.aspect }}" name="{{ stream.name }}" title="Delete" class="icon-2 info-tooltip"> -->
-
-<!-- </a> -->
-<!-- </td> -->
 					
 					<td>
 				
@@ -518,14 +629,7 @@ $(document).pngFix( );
   </ul>
     
 </div>
-		<script>
-		function geturl(c){
-		var x = document.getElementById("playcontext").value+c;
-		document.getElementById("playlink").value=c;
-		url='http://demo.octoshape.com/arplayer3/?link='+x
-		document.getElementById("urlstream").src=url
-		}
-		</script>	
+	
 		
 		</td>
 {% endif %} 
@@ -632,19 +736,7 @@ $(document).pngFix( );
 	
 	</tr>
 	{% endif %}
-	<script>
-	{% if not user.is_superuser %}
-	document.getElementById("editstreamtype").disabled=true
-	document.getElementById("editpublish").disabled=true
-	document.getElementById("editmaxbr").disabled=true
-	document.getElementById("editinview").disabled=true
 
-   
-	
-	
-	{% endif %}
-	</script>
-	
 	</table>
 	
 
@@ -653,8 +745,6 @@ $(document).pngFix( );
        <a name="_output" class="noa"></a>
       <div id="output" class="output"></div>
   
-<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/parse.js"></script>
-<link rel="StyleSheet" type="text/css" href="{{ STATIC_URL }}/static/css/styletable.css" />
 		 
       <div class="clear"></div>
           <div class="lfloat">
@@ -681,38 +771,6 @@ $(document).pngFix( );
 
 
 
-   <script>	
-   function putThis(control) { 
-// 	    confirm(control.innerText);
-	    document.getElementById("streamviewname").value=control.innerText
-	    document.getElementById("Holgerinp").value=control.innerText
-	}
-   </script>
-   <script>	
-   
-   function editstream(x)
-   {
-		   
-		    
-		    if ( confirm(" You are about to edit the stream"+x+")== true) {
-		    	
-		    	
-		        
-		        
-		    } 
-		    else 
-		    
-		    {
-		    	document.getElementById("searchresult").innerHTML ="Action Canceled. Try Again";
-		    	
-		        
-		        
-		    }
-	
-   }
-
-
-</script>
    
         <p></p>
       	</div>
@@ -768,18 +826,7 @@ $(document).pngFix( );
     Context   :<input id="playcontext" name="playcontext" size="30" value="{{ streamcontext }}"></input><br/>
      Playback Link   :<input id="playlink" name="playlink" onfocusout="geturl(this.value)"> </input><br/>
     Authorization Password   :  <input id="authpsw" name="authpsw" onfocusout="getauth()">  </input><br/><br/>
-     
-      
-      <script>
-		function getauth(){
-		var c=document.getElementById("playlink").value;
-		var authpsw=document.getElementById("authpsw").value;	
-		url='http://demo.octoshape.com/arplayer3/?link='+document.getElementById("playcontext").value+c+'&psw='+authpsw
-		document.getElementById("urlstream").src=url
-
-		}
-		</script>	
-     
+ 
       <iframe id="urlstream" width="537" height="600"></iframe>
       
       
@@ -788,32 +835,7 @@ $(document).pngFix( );
 <!--  <center><div id="player"></div>  -->
 <!--  {% endif %} -->
  <br/>
- 
- 	
 
- <script type="text/javascript">
-		var x = 'octoshape://opsqa.octoshape.org/'+document.getElementById('Holgerinp').value;
-		
-		document.getElementById('streamurl').value=x;
-		
-        var player_id = "player";
-        var player_width = 412;
-        var player_height = 288;
-
-        var player_streams = [
-        	{
-        		id: 'my_stream',
-				stream: x
-        	}
-        ];
-
-        //optional. starts the stream when the player is ready
-        var player_stream = "my_stream";
-        var params = {allowFullScreen: true, scale: 'noscale', allowScriptAccess: 'always'};
-        var attributes = {id: player_id, name: player_id};
-	    swfobject.embedSWF('http://octoshape-a.akamaihd.net/eps/players/infinitehd4/player.swf', player_id, player_width, player_height, "10.2.0", null, null, params, attributes);
-	
-</script>
       <div class="modal-footer">
         <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -885,23 +907,6 @@ $(document).pngFix( );
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  size="6" id="realtxt" placeholder="search" onkeyup="javascript:searchSel();" onblur="this.value=''" />
 
-		<script>
-		document.getElementById('realtxt').onkeyup = searchSel;
-		function searchSel() 
-		    {
-		      var input = document.getElementById('realtxt').value.toLowerCase();
-		       
-		          len = input.length;
-		          output = document.getElementById('custname').options;
-		      for(var i=0; i<output.length; i++)
-		          if (output[i].text.toLowerCase().indexOf(input) != -1 ){
-		          output[i].selected = true;
-		              break;
-		          }
-		      if (input == '')
-		        output[0].selected = true;
-		    }
-		</script>
 	</td>
 
 </tr>
@@ -920,53 +925,7 @@ $(document).pngFix( );
 			<td><input required placeholder="200,300" onfocusout="FunctionValidateBitrate()" type="text" id="maxbr" name="maxbr" class="inp-form" /><a href="" data-toggle="tooltip" data-placement="right" title="eg. 200,300,500 etc.This fields allows only numbers separated by comma .Please Note By default 30% will be added to bitrate.   "> what is this ?</a>
 			</td>
 			<td>
-<script>
-function FunctionValidateBitrate() 
-{
-	
-    var inp = document.getElementById("maxbr");
-    if (inp.value){
-    	
-    	
-    
-    if(!/^[0-9]+(,[0-9]+)*$/.test(inp.value))
-    {
-    	
-        alert('Invalid value detected in Max Bitrate in k:');
-        
-        return false;
-    }
-    
-    br= inp.value.split(",")   
-        {% if not user.is_superuser %}
-    	if (br.length>8)
-    	{
-			alert('Upto 8 Bitrates allowed, you entered '+br.length+' bitrates.');
-			return false;
-    	}
-    
-    	{% endif %}
-    for (i in br)
-    {
-    	{% if not user.is_superuser %}
-			if (br[i]>5000)
-			{
-				alert('Bitrate cant be greater than 5000, you entered '+br[i]);
-				return false;
-			}
-		{% endif %}
-		if (br[i]<64)
-				{
-				alert('Bitrate cant be less than 64, you entered '+br[i]);
-				return false;
-				}
- 
-            
-    }
-    }   
-    return true;
-}
-</script>
+
 			
 			</td>
 		</tr>
@@ -1032,19 +991,11 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 		</td>
 		</tr>
 	
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-});
-</script>
 
 	<tr>
 			<th valign="top"> </th>
 			<td>
-			<script>
-			var d = new Date();
-			document.getElementById("comments").innerHTML ="created by {{ request.user.username }} on "+d
-			</script>
+
 			
 			
 			<td></td>
@@ -1073,43 +1024,14 @@ $(document).ready(function(){
 		<th>&nbsp;</th>
 		<td valign="top">
 					<input  id="createstreambtn" type="button" onclick=SubmitValidate(); value="" class="form-submit" />
-		<script>
-		function SubmitValidate() 
-		{
-			if ( FunctionValidateBitrate())
-				
-				{
-				
-			
-				{% if user.quota > 9 %}
-				 
-				 document.getElementById("createstreambtn").disabled=true
-			  
-				 {% endif  %}
 
-				
-				Confirm();
-				
-				
-				}
-		    
-		    
-		}
-		
-		</script>
 			<input type="reset" value="" class="form-reset"  />
 		</td>
 		<td></td>
 	</tr>
 	
 	</table>
-<script>	
-if({{ flag1|safe }}!=1)
-	alert(' Error occured. Please Check values !');
-else
-alert('Stream has been added sucessfully.');
 
-</script>
 </form>
 	<!-- end id-form  -->
       
@@ -1171,26 +1093,15 @@ alert('Stream has been added sucessfully.');
                    		
 </textarea> 
 
-<script>
-function GetaspectFilter(){
-		var listbox = document.getElementById("aspectname");
-		var selIndex = listbox.selectedIndex;
-		var selValue = listbox.options[selIndex].text;
-		document.getElementById("aspectnamenew").value=selValue;
-		document.getElementById("aspectvalue").value = document.getElementById("aspectname").value;
-}
-</script>
+
             </td>
           
         </tr> 
 
-        
-
-	
 	<tr>
 		<th>&nbsp;</th>
 		<td valign="top">
-			<input id="createcustbtn" type="button" onclick=Confirmnewcust(); value="" class="form-submit" />
+			<input id="advsubmit" type="button" value="" class="form-submit" />
 		
 			<input type="reset" value="" class="form-reset"  />
 		</td>
@@ -1222,12 +1133,7 @@ function GetaspectFilter(){
 		
 		</td>
 </tr>
-<script>
-function FunctionLower() {
-    var x = document.getElementById("newcustname");
-    x.value = x.value.toLowerCase();
-}
-</script>
+
 	
 		<tr>
 		<th valign="top">CP Code:</th> 
@@ -1277,48 +1183,7 @@ function FunctionLower() {
 	
 	</table></form>
 </div>
-<script>
-function randomPassword(length) {
-    var chars = "abcdefghkmnpqrstuvwxyzABCDEFGHJKMNP2345678";
-    var pass = "";
-    for (var x = 0; x < length; x++) {
-        var i = Math.floor(Math.random() * chars.length);
-        pass += chars.charAt(i);
-    }
-    return pass;
-}
-
-function generate() {
-    addcust.row_password.value = randomPassword(addcust.length.value);
-}
-function generateopt() {
-    addstream.streampwdopt.value = randomPassword(addcust.length.value);
-}
-</script>
-
-<script>
-function Confirmnewcust() {
-    var x;
-    
-    
-    
-    
-    if ( confirm("Are you sure  ?")== true) {
-    	document.getElementById("createcustbtn").type ="Submit";
-        x = "You pressed OK ! ";
-        
-    } 
-    else 
-    
-    {
-    	document.getElementById("createstreambtn").type ="Cancel";
-    	
-        x = "You pressed Cancel!";
-        
-    }
-    document.getElementById("statuscust").innerHTML = x;
-}
-</script>	
+	
 
 </form>
 
@@ -1347,26 +1212,6 @@ function Confirmnewcust() {
 	
 		<!-- start id-form -->
 
-<script>
-function Confirm() {
-    var x;
-    
-    if ( confirm("Are you sure !")== true) {
-    	document.getElementById("createstreambtn").type ="Submit";
-        x = "You pressed OK ! Creating new stream.. ";
-        
-    } 
-    else 
-    
-    {
-    	document.getElementById("createstreambtn").type ="Cancel";
-    	
-        x = "You pressed Cancel!";
-        
-    }
-    document.getElementById("status").innerHTML = x;
-}
-</script>	
 		
 
 
@@ -1400,26 +1245,7 @@ function Confirm() {
 </tr>
 </table>
 
-<script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
 
-<script type="text/javascript">
-	function getme()
-	{
-                    $.ajax({
-                        url : "/ajax/", 
-                        type : "POST",
-                        data : {
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            forminput1 : $('#forminput1').val()
-                            },
-                        success : function(json) {
-                            $('#result').html(json.message);
-                        },
-                    
-                    });
-        
-	};
-</script>
 <form method="post" name="example" >
         {% csrf_token %}
         <input hidden name="example" id="forminput1" name="forminput1" type="text">
@@ -1454,11 +1280,9 @@ function Confirm() {
 	<!--  end footer-left -->
 	<div class="clear">&nbsp;</div>
 </div>
-
-
 <!-- end footer -->
 
-
+</div>
 
 
 </body>

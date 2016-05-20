@@ -4,19 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Octoshape Stream Setup</title>
 <link rel="stylesheet" href="static/css/screen.css" type="text/css" media="screen" title="default" />
-<!--  jquery core -->
-<script src="static/js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
 
-<!-- Custom jquery scripts -->
-<script src="static/js/jquery/custom_jquery.js" type="text/javascript"></script>
-
-<!-- MUST BE THE LAST SCRIPT IN <HEAD></HEAD></HEAD> png fix -->
-<script src="static/js/jquery/jquery.pngFix.pack.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-$(document).pngFix( );
-});
-</script>
 </head>
 <body id="login-bg"> 
  
@@ -52,7 +40,7 @@ $(document).pngFix( );
 						<tr>
 							<th></th>
 							<td valign="top"><input type="checkbox"
-								class="checkbox-size" id="login-check" /><label
+								class="checkbox-size" name="login-check" id="login-check" /><label
 								for="login-check">Remember me</label></td>
 						</tr>
 						<tr>

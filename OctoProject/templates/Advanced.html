@@ -1,4 +1,5 @@
-
+<html>
+<body>
 <style>
 .loader {
   border: 4px solid #f3f3f3;
@@ -8,8 +9,8 @@
   border-bottom: 4px solid red;
   width: 30px;
   height: 30px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 0.3s linear infinite;
+  animation: spin 0.3s linear infinite;
 }
 
 @-webkit-keyframes spin {
@@ -91,10 +92,18 @@
      </td>
 </tr>
 	
+<tr hidden id='authpsw'>
+		<th valign="top">Token Passsword :</th> 
+            <td>
+	<input type="text" size="30" onfocusout="GetaspectFilter()" id="authpswvalue" name="authpswvalue">
+                   		
+	</input> 
+     </td>
+</tr>
+	
 
-
-        <tr hidden>
-		<th valign="top">Value:</th> 
+        <tr id="rawvalue">
+		<th  valign="top">Value:</th> 
 
             <td>
 <textarea id="aspectvalue" name="aspectvalue" rows="4" cols="50">
@@ -106,8 +115,9 @@ $('.akamaivalue').show();
 function GetaspectFilter()
 {	
 		$('#akamai').hide();
+		$('#authpsw').hide();
+		$('#rawvalue').show();
 		var url=document.getElementById("streamidedit").value;
-
 		var listbox = document.getElementById("aspectname");
 		var selIndex = listbox.selectedIndex;
 		var selValue = listbox.options[selIndex].text;
@@ -118,18 +128,19 @@ function GetaspectFilter()
 		var methodvalue = method.options[methIndex].text;
 		document.getElementById("meth").value=methodvalue;
 		document.getElementById("aspectnamenew").value=selValue;
-		
-		
+
 		if (methodvalue == 'DELETE')
 		{
-			document.getElementById("aspectvalue").value = ""}
+			document.getElementById("aspectvalue").value = ""
+			$('#rawvalue').hide();}
 		else{		
 			document.getElementById("aspectvalue").value = document.getElementById("aspectname").value;}
 
-		if( selValue =='live-forward' & methodvalue != 'DELETE')
+		if( selValue =='live-forward')
 		{ 
-		
-		$('#akamai').show();
+			$('#rawvalue').hide();
+			if( methodvalue != 'DELETE')
+					{$('#akamai').show();}
 		document.getElementById("aspectvalue").value = ""
 		
 		
@@ -138,7 +149,14 @@ function GetaspectFilter()
 		document.getElementById("aspectvalue").value='{ "url" : "'+document.getElementById("akamaivalue").value+'" }'
 		
 		}
-	
+		if( selValue =='restrict-ticket')
+		{ 
+			$('#rawvalue').hide();
+			if( methodvalue != 'DELETE')
+					{$('#authpsw').show();
+			document.getElementById("aspectvalue").value='{ "authpsw" : "'+document.getElementById("authpswvalue").value+'" }'
+		}}
+		
 }
 </script>
             </td>
@@ -218,3 +236,5 @@ function myFunction() {
 </script>
 
   </center>
+  </body>
+  </html>
