@@ -22,4 +22,13 @@ class Aspectslist(admin.ModelAdmin):
     list_filter = ('filter',)
 admin.site.register(aspects,Aspectslist)
 
+admin.site.unregister(User)
+
+class Userlist(admin.ModelAdmin):
+    list_display = ('first_name','last_name','username', 'email','user_quota' , 'is_active','is_staff' , 'is_superuser','last_login')
+    search_fields = ['first_name']
+    list_filter = ('user_quota',)
+admin.site.register(User,Userlist)
+
+
 admin.site.disable_action('delete_selected')
