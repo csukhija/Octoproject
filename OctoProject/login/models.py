@@ -16,15 +16,14 @@ class Quota(User):
 
 class streams(models.Model):
     name = models.CharField(max_length=100,primary_key=True)
-    aspect=models.CharField(max_length=100)
-    bitrate=models.CharField(max_length=100,default="")
-    streamtype=models.CharField(max_length=100,default="")
-    publish=models.CharField(max_length=100,default="")
-    password=models.CharField(max_length=100,default="")
-    readonly=models.CharField(max_length=600,default="")
-    
-def __unicode__(self):
-    return self.name
+    aspect=models.CharField(max_length=100,default="Not Found")
+    bitrate=models.CharField(max_length=100,default="Not Found")
+    streamtype=models.CharField(max_length=100,default="Not Found")
+    publish=models.CharField(max_length=100,default="Not Found")
+    password=models.CharField(max_length=100,default="Not Found")
+    readonly=models.CharField(max_length=600,default="Not Found")
+    def __unicode__(self):
+        return self.name
 
 
 class customers(models.Model):

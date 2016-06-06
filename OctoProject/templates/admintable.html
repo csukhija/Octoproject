@@ -1,0 +1,256 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="shortcut icon" href="{{ STATIC_URL }}/static/images/shared/akamai.png" type="image/x-icon" />
+
+<title></title>
+
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
+	</script>
+<link rel="StyleSheet" type="text/css" href="{{ STATIC_URL }}/static/css/styletable.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/json-min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/parse.js"></script>
+<link rel="stylesheet" href=" {{ STATIC_URL }}/static/css/screen.css" type="text/css" media="screen" title="default" />
+
+</head>
+<body> 
+
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+	<!-- start logo -->
+	<div id="logo">
+	<a href="/"><img src="{{ STATIC_URL }}/static/images/shared/logo.png" width="156" height="40" alt="" /></a>
+	</div>
+	<!-- end logo -->
+	
+	
+	
+	
+	<!--  start top-search -->
+<div id="top-search">
+<font size="1" color="white">User &nbsp;:&nbsp; {{ request.user.first_name }}  </font>
+			{% if user.is_superuser %}
+   			<font size="1" color="green">(Full Access) &nbsp;&nbsp;</font>
+			{% else %}
+   			 <font size="1" color="green">(Limited Access) &nbsp;&nbsp;</font>
+   		<font size="1" color="white">	 Credits &nbsp;{{ user.user_quota }}&nbsp;</font>
+			{% endif %}	 
+</div>
+<div id="top-search">	
+<form target="_blank" method="post" action="/search/">
+		
+		  {% csrf_token %}
+		<td><input type="text" name="searchstring" value="jonasl/live/std/*"  onblur="if (this.value=='') { this.value='jonasl/live/std/*'; }" onfocus="if (this.value=='jonasl/live/std/*') { this.value=''; }" class="top-search-inp" /></td>
+		<td>
+		 
+		<select hidden name="aspect" id="aspect" class="">
+			<option value="">All</option>
+			<option value="?aspects=livebase-pushed">Live</option>
+			<option value="">CPCode</option>
+			<option value="?aspects=customer">Customer</option>
+			<option disabled value="?aspects=ond">VOD</option>
+			
+		</select> 
+		 
+		</td>
+		<td>
+		
+		<input target="_blank" type="submit" value="Submit" src="{{ STATIC_URL }}/static/images/shared/top_search_btn.gif"  />
+</form>
+		</td>
+		</tr>
+		</table>
+	</div>
+ 	<!--  end top-search -->
+ 	<div class="clear"></div>
+
+</div>
+<!-- End: page-top -->
+
+</div>
+<!-- End: page-top-outer -->
+	
+<div class="clear">&nbsp;</div>
+<!--  start nav-outer-repeat................................................................................................. START -->
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+		<!-- start nav-right -->
+		<div id="nav-right">
+		
+			
+			
+			
+	<!-- 		<div class="showhide-account"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_myaccount.gif" width="93" height="14" alt="" /></div>-->
+			<div class="clear">&nbsp;</div>
+			<div class="nav-divider">&nbsp;&nbsp;</div>
+			<a href="/signout" id="logout"><img src="{{ STATIC_URL }}/static/images/shared/nav/nav_logout.gif" width="64" height="14" alt="" /></a>
+			<div class="clear"></div>
+		
+			<!--  start account-content -->	
+			<div class="account-content">
+			<div class="account-drop-inner">
+				<a href="" id="acc-settings">Settings</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-details">Personal details </a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-project">Project details</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="" id="acc-inbox">Inbox</a>
+				<div class="clear">&nbsp;</div>
+				<div class="acc-line">&nbsp;</div>
+				<a href="http://octoshape.com/stats/index.php" target="_blank" id="acc-stats">Statistics</a> 
+			</div>
+			</div>
+			<!--  end account-content -->
+		
+		</div>
+		<!-- end nav-right -->
+
+
+		<!--  start nav -->
+		<div class="nav">
+		<div class="table">
+		
+		
+		
+		<div class="nav-divider">&nbsp;</div>
+		
+		<ul class="current"><li><!--[if IE 7]><!--><!--<![endif]-->
+		<!--[if lte IE 6]><table><tr><td><![endif]-->
+	<!--	<div  id="navigation" class="select_sub show">
+			<ul class="sub">
+				<li><a href="/allstream/">View all Streams</a></li>
+				<li >
+				<a href=#newstream>Add new stream</a>
+				
+				
+				</li>
+				<li ><a href=#Deletestream id="delhide" >Delete stream</a></li>
+				<li ><a href=#Modifystream>Modify stream</a></li>
+				<li ><a class="sub_show" href=#CPLookup>Stream Search</a></li>
+				
+			
+				
+			</ul>
+		</div>
+		-->
+		
+		
+		<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+		</li>
+		</ul>
+	
+	
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		</div>
+		<!--  start nav -->
+
+</div>
+<div class="clear"></div>
+<!--  start nav-outer -->
+</div>
+
+<!--  start nav-outer-repeat................................................... END -->
+
+
+
+
+
+
+
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+
+<body id="body" onmouseover="stopFocus();">
+<a name="_top" class="noa"></a>
+
+
+
+<div class="header">
+
+
+<div class="mainbody">
+<td><h3>Stream Low Level Configuration ! &nbsp; &nbsp;</h3> </td>
+
+   <div id="bodywrap" class="bodywrap"></div>
+   
+   
+   <div id="desc" class="desc">
+   
+  
+   </div>
+<form method="post" action="/ajax/">
+   <form onsubmit="doParse(); return false;">
+    {% csrf_token %}
+     
+      <div id="inputcontainer"><textarea id="text" name="text" rows="12">{{ json_response|safe }}</textarea>
+     </div>
+     
+		 
+      <div class="clear"></div>
+      <div class="lfloat"><input type="submit" id="submit" value="Convert to table" onclick="doParse(); return false;" /> <input type="button" id="reset" value="reset" onclick="clearPage();" />
+            
+<!--       <input type="button" id="PUT" value="PUT" onclick="doPut(); return false;" />  -->
+       
+<!--   <input type="button" id="PATCH" value="PATCH" onclick="doPatch(); return false;" />  -->
+  
+<!--   <input type="button" id="DELETE" value="DELETE" onclick="hideHelp(); return false;" />  -->
+<!--   <input type="button" id="GET" value="PATCH" onclick="doGet(); return false;" /> </div> -->
+      
+    
+  	  <input type="button" id="SendEmail" value="SendEmail" onclick="doPut(); return false;" />   
+      <!--<div class="rfloat"><input type="button" id="help" value="help" onclick="doHelp();" /></div>-->
+      <div class="lfloat"><input hidden type="button" id="help" value="Create a Stream" onclick="doHelp();" /></div>
+      <div class="rfloat"><input hidden Type="button" value="Go Back" onClick="history.go(-1);return true;"></div>
+		
+      <div class="clear"></div>
+      <hr />
+      <a name="_output" class="noa"></a>
+      <div id="stats" class="stats"></div>
+      <div name="output" id="output" class="output">
+      
+ </div>
+
+   </form>
+     <script type="text/javascript">
+function getme(){
+	$.ajax({
+        		url : "/ajax/", type : "POST",
+               	data : {
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  formv : $('#formv').val()	},
+                  success : function(json) {
+                            $('#ret').html(json.message);
+                        }
+                    
+                    });
+        
+};
+</script> 
+
+        {% csrf_token %}
+        <input id="formv" name="formv" type="text">
+        <input id="button" type="submit" value="click me"></input>
+        
+</form>
+	 <p name="ret" id="ret">sad
+</p>		
+   
+      
+
+
+</body>
+
+</html>

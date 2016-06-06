@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="shortcut icon" href="{{ STATIC_URL }}/static/images/shared/akamai.png" type="image/x-icon" />
+
+<title></title>
+
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
+	</script>
+<link rel="StyleSheet" type="text/css" href="{{ STATIC_URL }}/static/css/styletable.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/json-min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}/static/js/jquery/parse.js"></script>
+<link rel="stylesheet" href=" {{ STATIC_URL }}/static/css/screen.css" type="text/css" media="screen" title="default" />
+
+</head>
+<body onload="doParse();"> 
+<div id="myModal" role="dialog">
+      <div class="modal-footer">
+      
+        </div>
+        
+        <div class="modal-body">
+<td><h3> &nbsp; &nbsp;</h3> </td>      
+<td><h3>Stream Low Level Configuration ! &nbsp; &nbsp;</h3> </td>
+
+   <div id="bodywrap" class="bodywrap"></div>
+   
+   
+   <div id="desc" class="desc">
+   
+  
+   </div>
+
+
+    {% csrf_token %}
+     
+   
+     
+		 
+      <div class="clear"></div>
+<!--       <div class="lfloat"><input type="submit" id="submit" value="Convert x to table" onclick="doParse(); return false;" /> <input type="button" id="reset" value="reset" onclick="clearPage();" /> -->
+            
+<!-- <!--       <input type="button" id="PUT" value="PUT" onclick="doPut(); return false;" />  --> 
+       
+<!-- <!--   <input type="button" id="PATCH" value="PATCH" onclick="doPatch(); return false;" />  --> 
+  
+<!-- <!--   <input type="button" id="DELETE" value="DELETE" onclick="hideHelp(); return false;" />  --> 
+<!-- <!--   <input type="button" id="GET" value="PATCH" onclick="doGet(); return false;" /> </div> --> 
+      
+    
+ 	  <input type="button" id="SendEmail" value="SendEmail" onclick="doPut(); return false;" />
+<!--       <div class="rfloat"><input type="button" id="help" value="help" onclick="doHelp();" /></div> -->
+<!--       <div class="lfloat"><input hidden type="button" id="help" value="Create a Stream" onclick="doHelp();" /></div> -->
+<!--       <div class="rfloat"><input hidden Type="button" value="Go Back" onClick="history.go(-1);return true;"></div> -->
+		
+      <div class="clear"></div>
+      <hr />
+      <a name="_output" class="noa"></a>
+      <div id="stats" class="stats"></div>
+     
+     <center>
+      <div name="output" id="output" class="output">
+      </center>
+         <div hidden id="inputcontainer"><textarea id="text" name="text" rows="12">{{ json_response|safe }}</textarea>
+     </div>
+ </div>
+</div>
+<div id="result">
+
+</div>
+<script type="text/javascript">
+	function doPut()
+	{
+		document.getElementById("result").innerHTML ="Searching ... ";
+                    $.ajax({
+                        url : "/ajaxemail/", 
+                        type : "POST",
+                        data : {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            output : $('#output').val()
+                            },
+                        success : function(json) {
+                            $('#result').html(json.message);
+                        },
+                    
+                    });
+        
+	};
+</script>
+</div>
+</body>
+

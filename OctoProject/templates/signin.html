@@ -20,9 +20,88 @@
 	</script>
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js">				
 </script>
+<style>
+.iframe-placeholder
+{
+   background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="%233399ff" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle"> <center><div id="loader2" ><span style="color:lightblue" class="glyphicon glyphicon-refresh glyphicon-spin blue"></span></div></center>Loading ... </text></svg>') 0px 0px no-repeat;
+}
+/* enable absolute positioning */
+.inner-addon {
+  position: relative;
+}
 
+/* style glyph */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 0px;
+  pointer-events: none;
+}
+
+/* align glyph */
+.left-addon .glyphicon  { left:  10px;}
+.right-addon .glyphicon { right: 10px;}
+.right-addon .glyphicon { top: -12px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+
+/* Center the loader */
+.fa-spin-custom, .glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+    font-size: 100px;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+
+
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 0.5s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#outputbox1 {
+  text-align: center;
+}
+</style>
 </head>
-<body> 
+<body id="body1"> 
 <!--  start - script .....................-->
 <script>
 function geturl(c){
@@ -38,6 +117,15 @@ function getauth(){
 	document.getElementById("urlstream").src=url
 
 	}
+</script>
+<script>	
+function geturlmaster(c){
+	var x = document.getElementById("playcontext").value+c;
+	document.getElementById("masterlink").value=c;
+	url='/master/'+c
+	document.getElementById("masterstream").src=url
+	}
+	
 </script>
 
 <script>
@@ -60,14 +148,7 @@ function editstream(x)
 		    else 		    
 		    {document.getElementById("searchresult").innerHTML ="Action Canceled. Try Again";  }}
 </script>
-<script>
-function searchbtn()
-{	
-	document.getElementById("searchbtn").innerHTML ="Searching .. ";  
-	document.getElementById("loader1").hidden=false
 
-}
-</script>
  <script type="text/javascript">
 		var x = 'octoshape://opsqa.octoshape.org/'+document.getElementById('Holgerinp').value;
 		
@@ -532,25 +613,35 @@ function Confirm() {
   </div>
 {% endif  %}		
 <div id="searchfield">
-      <form onsubmit="searchbtn()" method="post" action="/Holger/">
+
+
+<script>
+function searchbtn()
+{	
+	document.getElementById("loader2").hidden=false;
+	document.getElementById("outputbox1").hidden=true;
+	document.getElementById("searchbtn").innerHTML ="Searching ... ";  
+	
+}
+</script>
+
+ <form onsubmit="searchbtn()"  method="post" action="/Holger/">
       {% csrf_token %}
       <td>
-      
-<input class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL"  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
+ <div style="color:lightgrey" class="inner-addon right-addon">
+      <h3 class="glyphicon glyphicon-search blue"></h3>   
+<input  class="biginput" onblur="this.placeholder='Search ISPP or type URL'"  onfocus="this.placeholder=''" placeholder="Search ISPP or type URL "  value="{{ streamviewname }}" type="text"  id="Holgerinp" name="Holgerinp"></input>
+</div>
 <a data-toggle="tooltip"  data-placement="right" title="eg. digiturk or digiturk/ch1 ">  what is this ? </a>
+   <input hidden id="button" type="button" onclick="getme1()" value="click me"></input>
 
 </td>
  <p id="searchbtn"  > Type Customer name or prefix and press Enter   </p>
- <div hidden id="loader1"  class="loader"></div>
 	
 </form>
 
-   <div id="outputbox1"> 
-
-
- 
-	
-        
+   <div  id="outputbox1"> 
+    
   <table id="myTable" class="display table" border="1" width="100%" cellpadding="0" cellspacing="0" id="content-table">
 
 	
@@ -561,7 +652,7 @@ function Confirm() {
 {% csrf_token %}
 <div class="table-responsive">
 				<table id="product" class="display table table-bordered table table-striped" border="2" width="100%" cellpadding="0" cellspacing="0" >
-				 <thead>  
+				 <thead >  
           				<tr>  
             <th>Stream Name</th>  
             <th>Aspect</th>  
@@ -584,7 +675,7 @@ function Confirm() {
 			
 				<tr  class="alternate-row">
 <!-- 					<td><input  type="checkbox"/></td> -->
-					<td  id="{{ stream.name }}" data-dismiss="modal" data-toggle="modal" data-target="#myModal" href="/lstream/{{ stream.name }}" > <a > {{ stream.name }}</a></td>
+					<td  id="{{ stream.name }}" onclick="geturlmaster('{{  stream.name  }}')" target="_blank" data-dismiss="modal" data-toggle="modal" data-target="#mastermodal" href="" > <a > {{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
 					<td>{% if stream.bitrate %}{% widthratio stream.bitrate 1000 1  %}k{% endif %} </td>
@@ -602,7 +693,7 @@ function Confirm() {
   
   
   <ul class="dropdown-menu">
-      <li ><a  data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
+<li ><a  data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
 <i style="color:black" class="glyphicon glyphicon-pencil"></i> &nbsp; Edit Stream<i class="icon-pencil"></i></a></li> 
 
 
@@ -662,11 +753,12 @@ function Confirm() {
 								
 	{% endfor %}
 				   </tbody> 
-				</table>
-	
-   </form> 
+</div> </table>
+
+
+
 </form> 
-   
+
  	 {% if bitrate %} 
  <form  method="post" action="/EditStream/">
  {% csrf_token %}
@@ -796,9 +888,9 @@ function Confirm() {
       
         <h4 class="modal-title">Stream Edit Page</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body"> 
         <p>Loading Stream Details.</p>
-        <div class="loader"></div>
+      <center>  <div class="loader"></div></center>
       </div>
       
       <div class="modal-footer">
@@ -827,7 +919,7 @@ function Confirm() {
      Playback Link   :<input id="playlink" name="playlink" onfocusout="geturl(this.value)"> </input><br/>
     Authorization Password   :  <input id="authpsw" name="authpsw" onfocusout="getauth()">  </input><br/><br/>
  
-      <iframe id="urlstream" width="537" height="600"></iframe>
+      <iframe class="iframe-placeholder" id="urlstream" frameBorder="0" width="535" height="600"></iframe>
       
       
       </div>
@@ -843,14 +935,49 @@ function Confirm() {
 </div>
   </div> 
   
-  
-  
+ <div id="mastermodal"  class="modal fade"  data-id="{{ stream.name }}"  data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-footer">
+      
+          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+      <div class="modal-header">
+      
+        <h4 class="modal-title">Master Details page</h4>
+      </div>
+      <div class="modal-body">
+     Master stream   :<input size="60" id="masterlink" name="masterlink" onfocusout="geturlmaster(this.value)"> </input><br/>
+ <br>
+
+      <iframe class="iframe-placeholder"  id="masterstream" frameBorder="0" width="837" height="600">
  
+      </iframe>
+      
+
+      </div>
+<!--             {% if streamlist %} -->
+<!--  <center><div id="player"></div>  -->
+<!--  {% endif %} -->
+ <br/>
+
+      <div class="modal-footer">
+        <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+  </div>  
+  
+    <center><div  hidden id="loader2" >
+<span style="color:lightblue" class="glyphicon glyphicon-refresh glyphicon-spin blue"></span>
+</div></center>
 
 
 
 
-    <div id="CreateStream" class="tab-pane fade">
+    <div id="CreateStream" class="tab-pane fade animate-bottom">
       <h3>	&nbsp;	&nbsp; 	Create Stream</h3>
       <p>
       		<div id="step-holder">
@@ -1112,7 +1239,7 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 </div>
 </div>
     
-    <div id="ModifyStream" class="tab-pane fade">
+    <div id="ModifyStream" class="tab-pane fade animate-bottom">
       <h3>	&nbsp;	&nbsp; 	New Customer</h3>
       <p><div class="section"> 
  
@@ -1225,6 +1352,7 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 <td></td>
 </tr>
 </table>
+
 	    	<br><br><br><br><br>
 	    </div>
 </p>
@@ -1246,16 +1374,34 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 </table>
 
 
-<form method="post" name="example" >
-        {% csrf_token %}
-        <input hidden name="example" id="forminput1" name="forminput1" type="text">
-        <input hidden id="butt" type="button" onclick="getme();" value="click me"></input>
-</form>
 
-   
-<div id="result">
-</div>			
-   
+<script type="text/javascript">
+function getme1(){
+	document.getElementById("loader2").hidden=false;
+	document.getElementById("outputbox1").hidden=true;
+	document.getElementById("searchbtn").innerHTML ="Searching ... ";  
+	$.ajax({
+        		url : "/Holger/", type : "POST",
+               	data : {
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  Holgerinp : $('#Holgerinp').val()	},
+                  success : function(x) {
+                	  $('#body1').html(x);        	 
+                	  document.getElementById("loader2").hidden=true;              	
+                                    }
+                    
+                    });
+        
+};
+</script> 
+       <form method="post">
+        {% csrf_token %}
+        <input hidden id="formv" name="formv" type="text">
+        <input hidden id="button" type="button" onclick="getme()" value="click me"></input>
+        
+</form>
+	 <p name="ret" id="ret">
+</p>
 
 <div class="clear">&nbsp;</div>
 
@@ -1283,7 +1429,7 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 <!-- end footer -->
 
 </div>
-
+	
 
 </body>
 </html>

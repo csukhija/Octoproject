@@ -19,11 +19,13 @@ from admin import Streamlist
 from django.http import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template import loader
 import socket
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 import octo_configs
 from django.db.models import F
+from django.core.mail import send_mail
 
 import math
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -49,6 +51,7 @@ def index(request):
 				customerlist=customers.objects.all().order_by('name')
 				aspectslist=aspects.objects.all().order_by('name')
 				Context = {'customerlist' : customerlist,'aspectslist' : aspectslist}
+				print Context
 				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 	if request.user.is_authenticated():
 		if request.POST.get('login-check', None):
@@ -219,10 +222,10 @@ def get_cpcodes(name):
 
 def Holgerstreams(request, tag=None):
 	if request.user.is_authenticated():
-		streamcontext=octo_configs.CONTEXT
-		#print streamcontext
+		streamcontext=octo_configs.CONTEXT	
 		global customerlist
-		streamviewname=request.POST.get('Holgerinp',"")
+		streamviewname=request.POST.get('Holgerinp','')
+		print streamviewname
 		streamlist=streams.objects.all().filter(name__contains=request.POST.get('Holgerinp',False))
 		customerlist=customers.objects.all().order_by('name')
 		aspectslist=aspects.objects.all().order_by('name')
@@ -231,9 +234,12 @@ def Holgerstreams(request, tag=None):
 			name = "{}/".format(stream.name.split('/')[0])
 			stream.cpcode = get_cpcodes(name)
 			slist.append(stream)
-		#print "i am "
+		#print "i am "		
 		Context = {'streamcontext' : streamcontext,'streamlist' : slist,'aspectslist' : aspectslist,'customerlist' : customerlist,'streamviewname' : streamviewname }
+		print streamlist
 		return render_to_response('signin.html',Context,context_instance=RequestContext(request))
+		#Context = {'streamcontext' : streamcontext,'streamlist' : slist,'aspectslist' : aspectslist,'customerlist' : customerlist,'streamviewname' : streamviewname }
+		#return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 	
 
@@ -300,8 +306,8 @@ def search(request, tag=None):
 		auth_handler.add_password('octowebapi', octo_configs.octo_server, octo_configs.octo_user,octo_configs.octo_pass)
 		opener = urllib2.build_opener(auth_handler)
 
-		first_name = octo_configs.octo_server+'/holger/32900/-/'
-		last_name = searchstr
+		first_name = str(octo_configs.octo_server+'/holger/32900/-/')
+		last_name = str(searchstr)
 		n=first_name+last_name
 		request1 = urllib2.Request(n)
 		request1.get_method = lambda: 'GET'
@@ -921,7 +927,11 @@ def Updateabr(request,tag=None):
 				updateDB(abr, 'multi-live')
 			except urllib2.HTTPError, e:
 				print e
-				return render(e,'signin.html',  { 'flag1' : 0 })
+				erroredit=str(e)
+				aspectslist=aspects.objects.all().order_by('name')
+				Context = { 'erroredit'	: erroredit,'customerlist' : customerlist,'abrupdatestatus'	: abrupdatestatus ,'aspectslist' : aspectslist}
+				return render_to_response('signin.html',Context,context_instance=RequestContext(request))
+				#return render(e,'signin.html', )
 			logger.info("User "+request.user.username+" updated abr stream "+abr)
 			abrupdatestatus=abr+' has been updated '
 			aspectslist=aspects.objects.all().order_by('name')
@@ -988,16 +998,48 @@ def advconfigpage(request):
 			#return HttpResponse('abr has been updated, RELOADING PAGE <meta http-equiv="refresh" content="3;url=/" />')
 		return HttpResponse("Permission Error")
 	return render_to_response('signout.html',context_instance=RequestContext(request))
-
 def ajax(request):
-	streamajaxname=	request.POST.get('forminput1', "")
-	print "hhhh"
-	reponse_data={}                             
-  	try:
-  		reponse_data['message']=streamajaxname
-   	except:
-   		reponse_data['message']='nothing'
-   	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+	reponse_data={}  
+	print "hi" 	                          
+	try:
+ 		reponse_data['message']=request.POST.get('formv', False)
+  		return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+ 	except:
+  		reponse_data['message']='nothing'
+  	 	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+  	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
 
-		
+def ajaxemail(request):
+	reponse_data={}  
+	print "hi" 	                          
+	try:
+ 		y=request.POST.get('output', False)
+ 		print y
+ 		print reponse_data
+ 		send_mail('Details here', y , 'from@example.com',['chirag@chirags.in'], fail_silently=False)
+  		return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+ 	except:
+  		reponse_data['message']='nothing'
+  	 	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+  	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+
+
+def master(request,tag=None):
+	logger.info("User "+request.user.username+" searched for "+tag)
+	if request.user.is_authenticated():
+		searchstr = tag
+		auth_handler = HTTPDigestAuthIntAuthHandler()
+		auth_handler.add_password('octowebapi', octo_configs.octo_server, octo_configs.octo_user,octo_configs.octo_pass)
+		opener = urllib2.build_opener(auth_handler)
+
+		first_name = str(octo_configs.octo_server+'/holger/32900/-/')
+		last_name = str(searchstr)
+		n=first_name+last_name
+		request1 = urllib2.Request(n)
+		request1.get_method = lambda: 'GET'
+		request1.add_header('Content-Type', 'application/json')
+		response = opener.open(request1).read()
+		return render(response, 'masterdetail.html', context_instance=RequestContext( request, { 'json_response' : response }))
+	return render_to_response('signout.html',context_instance=RequestContext(request))
+
 	

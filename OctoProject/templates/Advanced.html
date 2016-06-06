@@ -156,7 +156,9 @@ function GetaspectFilter()
 					{$('#authpsw').show();
 			document.getElementById("aspectvalue").value='{ "authpsw" : "'+document.getElementById("authpswvalue").value+'" }'
 		}}
-		
+		if( methodvalue == 'DELETE')
+		{
+			document.getElementById("aspectvalue").value = ""}
 }
 </script>
             </td>
