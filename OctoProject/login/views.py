@@ -24,8 +24,11 @@ import socket
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 import octo_configs
-from django.db.models import F
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from json2html import *
+
+
 
 import math
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -375,7 +378,9 @@ def NewStream(request):
 					Context={ 'erroredit' : erroredit ,'customerlist' : customerlist,'aspectslist' : aspectslist}
 					return render_to_response('signin.html',Context,context_instance=RequestContext(request))
 					#return HttpResponse(' Abort. 10 streams per day only . Please try tommorrow <meta http-equiv="refresh" content="3;url=/" />') 
-			request.user.user_quota=request.user.user_quota-1
+			if not request.user.is_superuser:
+				request.user.user_quota=request.user.user_quota-1
+			
 			request.user.save()
 			streamcreation=[]
 			passoverwriteerr=""
@@ -1000,7 +1005,7 @@ def advconfigpage(request):
 	return render_to_response('signout.html',context_instance=RequestContext(request))
 def ajax(request):
 	reponse_data={}  
-	print "hi" 	                          
+	print "hsi" 	                          
 	try:
  		reponse_data['message']=request.POST.get('formv', False)
   		return HttpResponse( json.dumps(reponse_data),content_type="application/json")
@@ -1009,20 +1014,23 @@ def ajax(request):
   	 	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
   	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
 
-def ajaxemail(request):
-	reponse_data={}  
-	print "hi" 	                          
+def ajaxemail(request):	 	                          
 	try:
- 		y=request.POST.get('output', False)
- 		print y
- 		print reponse_data
- 		send_mail('Details here', y , 'from@example.com',['chirag@chirags.in'], fail_silently=False)
-  		return HttpResponse( json.dumps(reponse_data),content_type="application/json")
- 	except:
-  		reponse_data['message']='nothing'
-  	 	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
-  	return HttpResponse( json.dumps(reponse_data),content_type="application/json")
+ 		y=request.POST.get('text', False)
+	 	x='Your stream details are <br><br>'
+	 	x+=json2html.convert(json = y)
+		x+='<br><br>Regards,<br>Octoshape Team'
+		imagedata = open("/login/static/images/newmail.gif", "rb").read()
+    		return HttpResponse(imagedata ,content_type="image/gif")
+	except:
+  		print "errssor"
+  	 	return HttpResponse("some not done")
 
+		#return HttpResponse(x)
+		#send_mail('Stream Details ', 'master details are ' , 'from@example.com',[request.user.email], fail_silently=False,html_message=x)
+		
+		#return HttpResponse('<html>Mail has been sent to your email ID</html>')
+ 	
 
 def master(request,tag=None):
 	logger.info("User "+request.user.username+" searched for "+tag)

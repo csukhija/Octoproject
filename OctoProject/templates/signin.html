@@ -21,9 +21,16 @@
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js">				
 </script>
 <style>
+
+
+a:hover{
+    cursor: pointer;
+}
+
+
 .iframe-placeholder
 {
-   background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="%233399ff" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle"> <center><div id="loader2" ><span style="color:lightblue" class="glyphicon glyphicon-refresh glyphicon-spin blue"></span></div></center>Loading ... </text></svg>') 0px 0px no-repeat;
+   background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="%233399ff" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle"> <center><div id="loader2" ><span style="color:lightblue" class="glyphicon glyphicon-refresh glyphicon-spin blue"></span></div></center> Loading ...</text></svg>') 0px 0px no-repeat;
 }
 /* enable absolute positioning */
 .inner-addon {
@@ -107,8 +114,10 @@
 function geturl(c){
 	var x = document.getElementById("playcontext").value+c;
 	document.getElementById("playlink").value=c;
-	url='http://demo.octoshape.com/arplayer3/?link='+x
+	var authpsw=document.getElementById("authpsw").value;
+	url='http://demo.octoshape.com/arplayer3/?link='+x+'&psw='+authpsw
 	document.getElementById("urlstream").src=url
+	
 	}
 function getauth(){
 	var c=document.getElementById("playlink").value;
@@ -117,6 +126,33 @@ function getauth(){
 	document.getElementById("urlstream").src=url
 
 	}
+</script>
+<script>
+$('#mastermodal').on('hidden', function(){
+	  $.clearFormFields(this)
+	});
+
+</script>
+<script type="text/javascript">
+function doPut()
+	{
+	alert("");
+		document.getElementById("searchbtn").innerHTML ="Sending ... ";
+                    $.ajax({
+                        url : "/ajaxemail/", 
+                        type : "POST",
+                        data : {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            output : "nesssw"
+                            },
+                        success : function(json) {
+                        	alert('mail sent');
+                            $('#searchbtn').html(json.message);
+                        },
+                    
+                    });
+        
+	};
 </script>
 <script>	
 function geturlmaster(c){
@@ -127,12 +163,20 @@ function geturlmaster(c){
 	}
 	
 </script>
-
+<script>	
+function clearframe(){
+	document.getElementById("masterstream").src=""
+	document.getElementById("urlstream").src=""
+	}
+	
+</script>
 <script>
 $(document).ready(function() {
     $('#product').DataTable();
+   
 } );
 </script>
+
 	<script>
 	{% if not user.is_superuser %}
 	document.getElementById("editstreamtype").disabled=true
@@ -624,7 +668,7 @@ function searchbtn()
 	
 }
 </script>
-
+	<br>
  <form onsubmit="searchbtn()"  method="post" action="/Holger/">
       {% csrf_token %}
       <td>
@@ -675,7 +719,7 @@ function searchbtn()
 			
 				<tr  class="alternate-row">
 <!-- 					<td><input  type="checkbox"/></td> -->
-					<td  id="{{ stream.name }}" onclick="geturlmaster('{{  stream.name  }}')" target="_blank" data-dismiss="modal" data-toggle="modal" data-target="#mastermodal" href="" > <a > {{ stream.name }}</a></td>
+					<td  id="{{ stream.name }}" onclick="geturlmaster('{{  stream.name  }}')" target="_blank" data-dismiss="modal" data-toggle="modal" data-target="#mastermodal"  > <a > {{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
 					<td>{% if stream.bitrate %}{% widthratio stream.bitrate 1000 1  %}k{% endif %} </td>
@@ -686,11 +730,11 @@ function searchbtn()
 
 					
 					<td>
-				
+			
 	<div class="dropdown" >
   <a 	{% if stream.readonly %}  disabled="true" {% endif %}	type="button" style="color:maroon" class="glyphicon glyphicon-cog btn btn-default btn-sm"  data-toggle="dropdown">
   <span  class="caret"></span></a>
-  
+
   
   <ul class="dropdown-menu">
 <li ><a  data-toggle="modal" data-target="#myModal" href="/lstream/{{stream.name}}" name="{{ stream.name }}"  title="Edit" >		
@@ -716,7 +760,6 @@ function searchbtn()
 <i style="color:red" class="glyphicon glyphicon-trash"></i> &nbsp; Delete Stream</a></li>
 
 
-
   </ul>
     
 </div>
@@ -734,7 +777,7 @@ function searchbtn()
 			
 				<tr  class="alternate-row">
 <!-- 					<td><input  type="checkbox"/></td> -->
-					<td onclick="javascript:window.location.reload()" ><a id="y" href=/lstream/{{ stream.name }} >{{ stream.name }}</a></td>
+					<td  ><a id="y" href=/lstream/{{ stream.name }} >{{ stream.name }}</a></td>
 					<td>{{ stream.aspect }}</td>
 					<td><font color="brown">{{ stream.cpcode }}</font></td>
 					<td>{{ stream.aspect }}</td>
@@ -875,18 +918,16 @@ function searchbtn()
    
     
     
-<div id="myModal" class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+<div id="myModal" class="modal fade" data-backdrop="static" id="myModal"  role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-    <div class="modal-footer">
-      
-          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
-        </div>
+ 
       <div class="modal-header">
+          <button style="float: right;" data-window="external" type="button" onclick="closeModal()" class="btn btn-info" data-dismiss="modal">&times;</button>
       
-        <h4 class="modal-title">Stream Edit Page</h4>
+        <h4 class="modal-title"></h4>
       </div>
       <div class="modal-body"> 
         <p>Loading Stream Details.</p>
@@ -894,32 +935,32 @@ function searchbtn()
       </div>
       
       <div class="modal-footer">
-        <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button"    class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 </div>
   </div>
 
   
- <div id="myModalplayer"  class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+ <div id="myModalplayer"  class="modal fade" data-backdrop="static" id="myModal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-    <div class="modal-footer">
+   </br>
       
-          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
-        </div>
+
       <div class="modal-header">
+                <button style="float: right;" type="button" onclick="clearframe();" class="btn btn-info"  data-dismiss="modal">&times;</button>
       
-        <h4 class="modal-title">Debug Player</h4>
+       <center> <h4 class="modal-title">Debug Player</h4> </center> 
       </div>
       <div class="modal-body">
     Context   :<input id="playcontext" name="playcontext" size="30" value="{{ streamcontext }}"></input><br/>
      Playback Link   :<input id="playlink" name="playlink" onfocusout="geturl(this.value)"> </input><br/>
-    Authorization Password   :  <input id="authpsw" name="authpsw" onfocusout="getauth()">  </input><br/><br/>
+    Authorization Password   :  <input id="authpsw" name="authpsw" onfocusout="getauth()">  </input><br/>
  
-      <iframe class="iframe-placeholder" id="urlstream" frameBorder="0" width="535" height="600"></iframe>
+      <iframe scrolling="no" id="urlstream" frameBorder="0" width="535" height="470"></iframe>
       
       
       </div>
@@ -928,31 +969,34 @@ function searchbtn()
 <!--  {% endif %} -->
  <br/>
 
-      <div class="modal-footer">
-        <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+  
     </div>
 </div>
   </div> 
-  
- <div id="mastermodal"  class="modal fade"  data-id="{{ stream.name }}"  data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+ <script type="text/javascript">
+  function resizeIframe(obj){
+     obj.style.height = 0;
+     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+ <div id="mastermodal"  class="modal fade"  data-id="{{ stream.name }}"  data-backdrop="static" id="myModal"  role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
     <div class="modal-content">
-    <div class="modal-footer">
-      
-          <button type="button" class="btn btn-info" onclick="window.location.reload();" class="btn btn-default" data-dismiss="modal">X</button>
-        </div>
+
       <div class="modal-header">
       
+      <button style="float: right;" data-window="external" type="button" onclick="clearframe()" class="btn btn-info" data-dismiss="modal">&times;</button>
+       
         <h4 class="modal-title">Master Details page</h4>
+        
       </div>
       <div class="modal-body">
      Master stream   :<input size="60" id="masterlink" name="masterlink" onfocusout="geturlmaster(this.value)"> </input><br/>
  <br>
 
-      <iframe class="iframe-placeholder"  id="masterstream" frameBorder="0" width="837" height="600">
+      <iframe src="" class="iframe-placeholder" id="masterstream" frameborder="0"  height=500 width="100%">
  
       </iframe>
       
@@ -964,7 +1008,7 @@ function searchbtn()
  <br/>
 
       <div class="modal-footer">
-        <button type="button"  onclick="window.location.reload();"  class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" onclick="clearframe();"  class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 </div>
@@ -1245,7 +1289,7 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
  
 <h4>New Customer</h4>
 
-
+	<br><br>
 		<form name="addcust" method="post" action="/NewCust/" >
 	{% csrf_token %}
 		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
@@ -1253,7 +1297,7 @@ and only if redundant is requested in SOF eg. test/ch1/200k/a and test/ch1/200k/
 		<tr>
 		<th valign="top">New Customer Name:</th> 
 		<td>	
-		
+	
 		
 	<input type="text" onfocusout="FunctionLower()" required  id="newcustname" name="newcustname" class="inp-form" />
 	
@@ -1397,7 +1441,7 @@ function getme1(){
        <form method="post">
         {% csrf_token %}
         <input hidden id="formv" name="formv" type="text">
-        <input hidden id="button" type="button" onclick="getme()" value="click me"></input>
+        <input hidden id="button" type="button" onclick="doPut()" value="click me"></input>
         
 </form>
 	 <p name="ret" id="ret">

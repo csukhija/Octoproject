@@ -11,8 +11,6 @@ class Meta:
 
 # Create your models here.
 
-class Quota(User):
-    quota=models.CharField(max_length=100)
 
 class streams(models.Model):
     name = models.CharField(max_length=100,primary_key=True)

@@ -210,7 +210,7 @@
 <!--   <input type="button" id="GET" value="PATCH" onclick="doGet(); return false;" /> </div> -->
       
     
-  	  <input type="button" id="SendEmail" value="SendEmail" onclick="doPut(); return false;" />   
+  	  <input hidden type="button" id="SendEmail" value="SendEmail" onclick="doPut(); return false;" />   
       <!--<div class="rfloat"><input type="button" id="help" value="help" onclick="doHelp();" /></div>-->
       <div class="lfloat"><input hidden type="button" id="help" value="Create a Stream" onclick="doHelp();" /></div>
       <div class="rfloat"><input hidden Type="button" value="Go Back" onClick="history.go(-1);return true;"></div>
@@ -241,11 +241,11 @@ function getme(){
 </script> 
 
         {% csrf_token %}
-        <input id="formv" name="formv" type="text">
-        <input id="button" type="submit" value="click me"></input>
+        <input hidden id="formv" name="formv" type="text">
+        <input hidden id="button" type="submit" value="click me"></input>
         
 </form>
-	 <p name="ret" id="ret">sad
+	 <p hidden name="ret" id="ret">sad
 </p>		
    
       

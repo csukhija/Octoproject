@@ -11,6 +11,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='aspects',
+            fields=[
+                ('name', models.CharField(max_length=100, serialize=False, primary_key=True)),
+                ('filter', models.CharField(max_length=2000)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='customers',
             fields=[
                 ('name', models.CharField(max_length=100, serialize=False, primary_key=True)),
@@ -24,7 +34,12 @@ class Migration(migrations.Migration):
             name='streams',
             fields=[
                 ('name', models.CharField(max_length=100, serialize=False, primary_key=True)),
-                ('aspect', models.CharField(max_length=100)),
+                ('aspect', models.CharField(default=b'Not Found', max_length=100)),
+                ('bitrate', models.CharField(default=b'Not Found', max_length=100)),
+                ('streamtype', models.CharField(default=b'Not Found', max_length=100)),
+                ('publish', models.CharField(default=b'Not Found', max_length=100)),
+                ('password', models.CharField(default=b'Not Found', max_length=100)),
+                ('readonly', models.CharField(default=b'Not Found', max_length=600)),
             ],
             options={
             },
